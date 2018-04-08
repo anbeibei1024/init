@@ -1,7 +1,9 @@
-package com.dashen.init;
+package com.dashen.init.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.dashen.init.R;
 
 public class MainActivity extends AppCompatActivity {
 
