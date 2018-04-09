@@ -3,9 +3,9 @@ package com.dashen.init.common.newNetwork.service
 import com.dashen.init.base.ResultBean
 import com.dashen.init.common.newNetwork.model.*
 import com.dashen.init.common.newNetwork.request.EditUserInfoRequest
+import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
-import rx.Observable
 
 /**
  * Created by beibei on 2018/3/19.

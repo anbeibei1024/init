@@ -4,7 +4,7 @@ import com.dashen.init.common.constant.Constant
 import com.dashen.init.common.newNetwork.convert.MyGsonConverterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 /**
  * Created by beibei on 2018/3/19.
@@ -21,7 +21,7 @@ class RetrofitHelper private constructor() {
             mRetrofit = Retrofit.Builder()
                     .baseUrl(Constant.HOST)
                     .addConverterFactory(MyGsonConverterFactory.create())  //添加Gson支持
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())  //添加RxJava支持
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())  //添加RxJava支持
                     .client(mClient)                                            //关联okhttp
                     .build()
         }

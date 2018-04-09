@@ -10,7 +10,7 @@ object Constant {
     val HOST = "http://vcas.newtranx.com:8088/vcas/v1/"//ip
 
     var MOBILE = ""//用户id
-    var TOKEN = ""
+    var TOKEN = "201804072213289532d872b5e096b40858e3e9b96bea01bb8"
     var PHOTO = ""//用户昵称
     var UTYPE = ""//用户头像url
 

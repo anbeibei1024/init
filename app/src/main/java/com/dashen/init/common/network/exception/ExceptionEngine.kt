@@ -4,7 +4,7 @@ import android.net.ParseException
 import com.google.gson.JsonParseException
 import org.apache.http.conn.ConnectTimeoutException
 import org.json.JSONException
-import retrofit2.adapter.rxjava.HttpException
+import retrofit2.adapter.rxjava2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
