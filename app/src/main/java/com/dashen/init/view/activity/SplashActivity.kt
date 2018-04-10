@@ -20,12 +20,13 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class SplashActivity : BaseActivity() {
     private val mPerms = arrayOf(Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_EXTERNAL_STORAGE)//有了读权限就有了写权限了
+            Manifest.permission.READ_EXTERNAL_STORAGE)
 
     private var handler: Handler? = Handler()
     private var runnable: Runnable? = Runnable {
         if (mApp!!.getLoginStatus()) {
-            startActivityFinish(MainActivity::class.java)
+//            startActivityFinish(MainActivity::class.java)
+            startActivityFinish(LoginActivity::class.java)
         } else {
             startActivityFinish(LoginActivity::class.java)
         }
