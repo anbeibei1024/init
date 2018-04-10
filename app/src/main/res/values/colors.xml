@@ -1,6 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/base_transparent</color>
+    <color name="colorPrimaryDark">@color/base_theme</color>
+    <color name="colorAccent">@color/base_theme</color>
+
+    <!--基色调-->
+    <color name="base_yellow">#FFA625</color>
+    <color name="base_green">#49C781</color>
+    <color name="base_masking">#44000000</color><!--30%透明蒙版-->
+    <color name="base_masking_black">#CC000000</color>
+    <color name="base_masking_line">#44ffffff</color><!--30%透明蒙版白色横线-->
+    <color name="base_transparent">#00000000</color><!--透明色-->
+    <color name="base_pic_bg">#f5f5f5</color>
+    <color name="base_theme_gray">#B0B0B0</color>
+    <color name="base_masking_white">#b0ffffff</color><!--70%透明度白色-->
+    <!--主题色-->
+    <color name="base_theme">#516AAD</color>
+    <color name="base_theme_half">#99516AAD</color>
+    <color name="base_theme_sec">#F2725E</color>
+    <!--背景色-->
+    <color name="base_background">#F0F0F0</color>
+    <color name="base_background_light">#FAFAFA</color>
+
+    <!--常用色值-->
+    <color name="color_bg">#f0f0f0</color>
+    <color name="color_bg1">#F5F5F5</color>
+    <color name="color_black">#000000</color><!--黑色-->
+    <color name="color_white">#fff</color><!--白色-->
+    <color name="color_white_trans_half">#cfff</color><!--白色-->
+    <color name="color_text_important">#333333</color>
+    <color name="color_text_content">#666666</color><!--标题-->
+    <color name="color_text_unimportant">#999999</color><!--所有提示类文字颜色-->
+    <color name="color_line_horizontal">#f0f0f0</color>
+    <color name="color_line_dark_horizontal">#E6E6E6</color>
+    <color name="color_line_vertical">#d9d9d9</color>
+    <color name="color_blue">#aa0000FF</color>
+    <color name="color_yellow">#aaFFFF00</color>
+    <!--<color name="color_red">#aaFF0000</color>-->
+    <color name="color_red">#E66052</color>
+    <color name="color_purse">#aa822AE6</color>
+    <color name="color_no_click">#b0c8c8c8</color>
+    <color name="color_no_click_pressed">#c8c8c8</color>
+    <color name="color_trans">#0000</color>
+    <color name="color_dark_blue">#FF0964B3</color>
+    <color name="color_white_trans">#efff</color><!--白色-->
+    <color name="color_translation_blue">#b01682e0</color>
+    <color name="ah_id_card_mask">#332faeff</color>
+    <color name="base_grey">#E4E4E4</color>
+    <color name="timeline_darker_gray">#aaa</color>
+    <color name="clock_map_shape_grey">#c8c8c8</color>
+    <color name="color_red_pure">#F43530</color>
+
+    <!--聊天界面-->
+    <color name="chat_background">#d3d3d3</color>
+
+    <color name="color_wave">#5FB4E6</color>
+    <color name="color_wave_text">#5FD08F</color>
+    <color name="color_wave_light">#DAF2FF</color>
+    <color name="color_spread">#11418EFF</color>
+
+    <color name="color_voice_bg_red">#ee923432</color>
+
+    <!--分割线-->
+    <color name="tab_color_red">#d81e06</color>
+    <color name="tab_color_gray">#8a8a8a</color>
+
+    <color name="corpus_status_success">#5FD08F</color>
+    <color name="corpus_status_review">#F8CB56</color>
+    <color name="corpus_status_fail">#F2725E</color>
+    <color name="corpus_status_no_review">#C5D2E3</color>
+
+
+    <color name="task_txt_red">#FF5761</color>
+    <color name="task_txt_black">#151515</color>
+
+    <color name="gradient_start_color">@color/color_purse</color>
+    <color name="gradient_middle_color">@color/base_theme</color>
+    <color name="gradient_end_color">#FF52CEF1</color>
+
+
+    <!--takephoto-修改状态栏和toolbar颜色-->
+    <color name="multiple_image_select_primaryDark">@color/base_theme</color>
+    <color name="multiple_image_select_accent">@color/base_theme</color>
+    <color name="multiple_image_select_primary">@color/base_theme</color>
+
+    <color name="drawable_grey">#CBCBCB</color>
+
+    <color name="circle_color_light_blue">#FFAABBEA</color>
+    <color name="circle_color_blue">@color/base_theme</color>
+
 </resources>

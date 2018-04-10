@@ -1,3 +1,81 @@
 <resources>
-    <string name="app_name">init</string>
+    <string name="app_name">智慧社区</string>
+
+    <!--通用-->
+    <string name="permission_need">"该应用需要定位权限，请确认设置开启"</string>
+
+
+
+    <string name="main_text_twice">再按一次退出程序</string>
+    <string name="permission_setting">设置</string>
+    <string name="setting_cache_default">0.00M</string>
+    <string name="permission_cancle">取消</string>
+    <string name="permission_title">权限请求</string>
+    <string name="sf_tv_suggestion_feedback">我要反馈</string>
+    <string name="sf_et_feedback_hint">请输入反馈内容(500字以内)</string>
+    <string name="sf_btn_send_suggestion_feedback">发送</string>
+    <string name="no_network">网络连接不可用，请稍后重试</string>
+    <string name="about_us">关于我们</string>
+    <string name="push_ad">内容详情</string>
+    <string name="help">帮助中心</string>
+    <string name="no_data">暂无数据</string>
+    <string name="need_store">版本更新需要读写外部存储权限，请确认是否设置开启</string>
+    <string name="chat_record_permission">需要获取手机录音机、写入内存卡、读取联系人等权限，请打开相关权限</string>
+    <string name="text_speech_now">正在识别</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string><!--密码限定-->
+
+
+    <!--主界面-->
+    <string name="main_tab_title1">首页</string>
+    <string name="main_tab_title2">任务中心</string>
+    <string name="main_tab_title3">我的任务</string>
+    <string name="main_tab_title4">我的</string>
+
+    <!--登录+注册-->
+    <string name="login_agreement_text">注册后即表示你同意</string>
+    <string name="login_agreement_content">使用条款</string>
+    <string name="login_verify_again">重新获取</string>
+    <string name="login_verify_send">已发送</string>
+    <string name="login_get_code">获取验证码</string>
+    <string name="login_toast_aggress">请阅读《用户协议及隐私条款》并勾选</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login_mobile_hint">请输入手机号</string>
+    <string name="login_forget_password">忘记密码</string>
+    <string name="login_bt_login">登录</string>
+    <string name="login_new_register">新用户注册</string>
+    <string name="login_bt_register">登录</string>
+    <string name="login_customer_service">在线客服</string>
+    <string name="login_code_hint">请输入验证码</string>
+    <string name="modify_password_commit">完成</string>
+    <string name="modify_password_origin">旧密码</string>
+    <string name="modify_password_new">新密码</string>
+    <string name="modify_password_sure">确认新密码</string>
+    <string name="login_password_hint2">请确认密码</string>
+    <string name="login_psd">密码登录</string>
+    <string name="login_code">手机验证码登录</string>
+
+    <!--我的-->
+    <string name="mine_tv_points">积分</string>
+    <string name="mine_tv_task">任务</string>
+    <string name="mine_tv_corpus">语料库</string>
+    <string name="mine_tv_corpus2">我的语料库</string>
+    <string name="mine_tv_0">0</string>
+    <string name="ask_logout">您确定要退出登录吗?</string>
+    <string name="logout">退出登录</string>
+    <string name="mine_ll_points">我的积分</string>
+    <string name="mine_ll_evaluate">给个好评</string>
+    <string name="mine_ll_share">分享应用</string>
+    <string name="mine_ll_our">关于我们</string>
+    <string name="mine_ll_feedback">用户反馈</string>
+    <string name="mine_ll_setting">系统设置</string>
+    <string name="mine_ll_logout">退出登录</string>
+    <string name="iv_image">图片</string>
+    <string name="task_id_title"><![CDATA[任务ID: ]]></string>
+
+    <string name="returned_from_app_settings_to_activity">
+        Returned from app settings to MainActivity with the following permissions:
+        \n\nCamera: %s
+        \nLocation &amp; Contacts: %s
+        \nSMS: %s
+    </string>
 </resources>

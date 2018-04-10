@@ -1,5 +1,7 @@
 package com.dashen.init.common.constant
 
+import com.dashen.init.App
+
 /**
  * Created by anbeibei on 2018/4/8.
  */
@@ -23,6 +25,7 @@ object Constant {
      */
     val PARTNER_KEY = "18fa0501640c40eaab7a9221bf90313d"//正式key
 
+    val FILE_NAME = App.context.packageName//包名存储
     /**=============================三方平台key============================== */
     val BUGOUT_APPKEY = "28ade283a41de5e9fee28467a1d4e606"
     var UMENG_KEY = "5aaf6fa8f43e48346500018e"
@@ -33,7 +36,7 @@ object Constant {
     /**
      * 请求权限返回码
      */
-    val REQUEST_PERMISSION1 = 0
+   const val REQUEST_PERMISSION1 = 0
     /**
      * 请求权限返回码
      */

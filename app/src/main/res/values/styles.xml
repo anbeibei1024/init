@@ -1,11 +1,42 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <!--设置-全屏 windowBackground 为默认 -->
+    <style name="FullScreenTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--设置-全屏 windowBackground 为启动图-->
+    <style name="SplashTheme" parent="FullScreenTheme">
+        <item name="android:windowBackground">@mipmap/splash_image</item>
+    </style>
+
+    <!--点击水波纹效果-->
+    <style name="selectable_item_background">
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+
+
+    <!--横向分隔线-->
+    <style name="Horizontal_Line">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/color_line_horizontal</item>
+    </style>
+
+    <!--竖向分割线-->
+    <style name="Vertical_Line">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/color_line_vertical</item>
     </style>
 
 </resources>

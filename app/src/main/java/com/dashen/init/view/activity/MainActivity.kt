@@ -1,4 +1,4 @@
-package com.dashen.init.view
+package com.dashen.init.view.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
