@@ -43,24 +43,26 @@ dependencies {
      * ----------框架必备包---（版本截止2018.04.08最新）--------------
      */
     implementation files('libs/codec.jar')//处理各种加密解密
-    compile 'com.android.support:multidex:1.0.3'//处理方法数限制
+    implementation 'com.android.support:multidex:1.0.3'//处理方法数限制
 
     //网络
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
-    compile 'com.squareup.retrofit2:converter-gson:2.4.0'// 支持Gson解析
-    compile 'com.squareup.retrofit2:retrofit:2.4.0'// Android 支持 Retrofit
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'// 衔接 Retrofit & RxJava
-    compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'// 支持Gson解析
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'// Android 支持 Retrofit
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'// 衔接 Retrofit & RxJava
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //图片加载
     implementation 'com.facebook.fresco:fresco:1.8.1'
     //状态栏
-    compile 'com.jaeger.statusbarutil:library:1.5.0'
+    implementation 'com.jaeger.statusbarutil:library:1.5.0'
     //权限管理
     implementation 'pub.devrel:easypermissions:1.2.0'//need to use compileSdkVersion 27
-
-    compile 'com.dashen.utils:utils:1.0.3'
+    //封装的常用工具
+    implementation 'com.dashen.utils:utils:1.0.3'
+    //上拉加载下拉刷新
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
 
     //轮播
 //    compile 'com.bigkoo:convenientbanner:2.0.5'
