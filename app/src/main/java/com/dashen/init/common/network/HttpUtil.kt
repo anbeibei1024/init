@@ -34,7 +34,7 @@ object HttpUtil {
 
             override fun onNext(bean: ResultBean<T>) {
                 resultListener.onSuccess(bean.data)
-                resultListener.onMessage(bean.code!!.toInt(), bean.message ?: "----exception---后台没给传message--")
+                resultListener.onMessage(bean.errorCode!!.toInt(), bean.message ?: "----exception---后台没给传message--")
             }
 
             override fun onError(error: Throwable) {

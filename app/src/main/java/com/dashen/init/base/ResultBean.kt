@@ -11,11 +11,11 @@ package com.dashen.init.base
 class ResultBean<T> {
     /**
      * message : 获取成功
-     * code : 0
+     * errorCode : 0
      * data :
      */
     var message: String? = null
-    var code: String? = null
+    var errorCode: String? = null
     var data: T? = null
 
 }

@@ -32,20 +32,20 @@ class MainHelper(var context: Context, val mMainView: MainView) : Presenter() {
      * 获取轮播图片
      */
     fun getBannerData() {
-        HttpUtil.request(RetrofitHelper.getRequest(RequestIntf::class.java).getBannerData(Constant.TOKEN),
-                object : HttpUtil.OnResultListener<ArrayList<BannerItem>?> {
-                    override fun onSuccess(t: ArrayList<BannerItem>?) {
-                        t?.let { mMainView.getBannerDataSuccess(it) }
-                    }
-
-                    override fun onError(error: Throwable, msg: String) {
-                        mMainView.getBannerDataError()
-                    }
-
-                    override fun onMessage(errorCode: Int, msg: String) {
-                    }
-
-                })
+//        HttpUtil.request(RetrofitHelper.getRequest(RequestIntf::class.java).getBannerData(Constant.TOKEN),
+//                object : HttpUtil.OnResultListener<ArrayList<BannerItem>?> {
+//                    override fun onSuccess(t: ArrayList<BannerItem>?) {
+//                        t?.let { mMainView.getBannerDataSuccess(it) }
+//                    }
+//
+//                    override fun onError(error: Throwable, msg: String) {
+//                        mMainView.getBannerDataError()
+//                    }
+//
+//                    override fun onMessage(errorCode: Int, msg: String) {
+//                    }
+//
+//                })
     }
 
 

@@ -30,9 +30,9 @@ class MyGsonResponseBodyConverter<T>(private val mGson: Gson, private val adapte
         val re = mGson.fromJson(response, ResultBean::class.java)
         //todo 关注的重点，自定义响应码中非0的情况，一律抛出ApiException异常。
         //这样，我们就成功的将该异常交给onError()去处理了。
-        if (re.code != "0000"&&re.code != "1107") {//服务器返回错误信息
+        if (re.errorCode != "0000"&&re.errorCode != "1107") {//服务器返回错误信息
             value.close()
-            throw ServerException(re.message!!, re.code!!.toInt())
+            throw ServerException(re.message!!, re.errorCode!!.toInt())
         } else {
             val mediaType = value.contentType()
             val charset = if (mediaType != null) mediaType.charset(UTF_8) else UTF_8
