@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/base_transparent</color>
+    <color name="colorPrimary">@color/base_theme</color>
     <color name="colorPrimaryDark">@color/base_theme</color>
     <color name="colorAccent">@color/base_theme</color>
 
@@ -15,7 +15,7 @@
     <color name="base_theme_gray">#B0B0B0</color>
     <color name="base_masking_white">#b0ffffff</color><!--70%透明度白色-->
     <!--主题色-->
-    <color name="base_theme">#516AAD</color>
+    <color name="base_theme">#FFA625</color>
     <color name="base_theme_half">#99516AAD</color>
     <color name="base_theme_sec">#F2725E</color>
     <!--背景色-->

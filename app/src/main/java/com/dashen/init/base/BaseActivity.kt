@@ -42,6 +42,8 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBar()
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mApp = application as App
         sp = mApp!!.getSharedPreferences()
@@ -399,5 +401,14 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
                 .setNegativeButton(getString(R.string.permission_cancle))
                 .build()
                 .show()
+    }
+
+
+    //    ------------------------重构-----------------------
+    /**
+     * 状态栏的统一设置，如果个别页面为不同的状态栏时，重写此方法即可
+     */
+    open fun setStatusBar() {
+        StatusBarUtil.setColor(this, resources.getColor(R.color.colorPrimary), 0)
     }
 }
