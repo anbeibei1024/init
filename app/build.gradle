@@ -30,9 +30,21 @@ android {
     }
 }
 
+//解决支持库版本兼容问题
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.1.0'
+            }
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -55,8 +67,8 @@ dependencies {
 
     //图片加载
     implementation 'com.facebook.fresco:fresco:1.8.1'
-    //状态栏
-    implementation 'com.jaeger.statusbarutil:library:1.5.0'
+//    //状态栏
+//    implementation 'com.jaeger.statusbarutil:library:1.5.1'
     //权限管理
     implementation 'pub.devrel:easypermissions:1.2.0'//need to use compileSdkVersion 27
     //封装的常用工具

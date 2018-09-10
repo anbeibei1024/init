@@ -15,10 +15,10 @@ import com.dashen.demeter.common.utils.NetUtils
 import com.dashen.init.App
 import com.dashen.init.R
 import com.dashen.init.common.utils.ActivityManagerUtils
+import com.dashen.init.common.utils.StatusBarUtil
 import com.dashen.init.common.utils.StatusUiTextUtils
 import com.dashen.init.view.broadcast.NetBroadcastReceiver
 import com.dashen.utils.LogUtils
-import com.jaeger.library.StatusBarUtil
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
