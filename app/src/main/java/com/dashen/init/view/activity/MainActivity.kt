@@ -2,6 +2,7 @@ package com.dashen.init.view.activity
 
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
+import com.dashen.init.common.networkJava.request.InitDataNoParamRequest
 import com.dashen.init.presenter.MainHelper
 import com.dashen.init.presenter.viewinter.MainView
 
@@ -13,7 +14,12 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun initView() {
         mMainHelper = MainHelper(this, this)
-        mMainHelper?.getBannerData()
+        mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
+
+
+
+
+
 
 //        tv.setOnClickListener{
 //            RxBus.instance.post(MessageEvent(Constant.MINE_MODIFY_INFO, ""))

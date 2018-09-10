@@ -1,4 +1,4 @@
-package com.dashen.init.base
+package com.dashen.init.common.network.model
 
 /**
  * 项目名称：demeter
@@ -9,13 +9,9 @@ package com.dashen.init.base
  * 备注：
  */
 class ResultBean<T> {
-    /**
-     * message : 获取成功
-     * errorCode : 0
-     * data :
-     */
     var message: String? = null
-    var errorCode: String? = null
+    var errcode: String? = null
+    var retcode: String? = null
     var data: T? = null
 
 }

@@ -2,12 +2,14 @@ package com.dashen.init.presenter
 
 import android.content.Context
 import com.dashen.init.base.Presenter
-import com.dashen.init.common.constant.Constant
-import com.dashen.init.common.newNetwork.HttpUtil
-import com.dashen.init.common.newNetwork.helper.RetrofitHelper
-import com.dashen.init.common.newNetwork.model.BannerItem
-import com.dashen.init.common.newNetwork.service.RequestIntf
+import com.dashen.init.common.networkJava.HttpUtil
+import com.dashen.init.common.networkJava.helper.RetrofitHelper
+import com.dashen.init.common.networkJava.model.Translation1
+import com.dashen.init.common.networkJava.request.InitDataNoParamRequest
+import com.dashen.init.common.networkJava.request.RequestInterface
 import com.dashen.init.presenter.viewinter.MainView
+import com.dashen.utils.GsonUtils
+import com.dashen.utils.LogUtils
 import java.lang.ref.WeakReference
 
 /**
@@ -28,26 +30,26 @@ class MainHelper(var context: Context, val mMainView: MainView) : Presenter() {
 
     override fun onCreate() {}
 
-    /**
-     * 获取轮播图片
-     */
-    fun getBannerData() {
-//        HttpUtil.request(RetrofitHelper.getRequest(RequestIntf::class.java).getBannerData(Constant.TOKEN),
-//                object : HttpUtil.OnResultListener<ArrayList<BannerItem>?> {
-//                    override fun onSuccess(t: ArrayList<BannerItem>?) {
-//                        t?.let { mMainView.getBannerDataSuccess(it) }
-//                    }
-//
-//                    override fun onError(error: Throwable, msg: String) {
-//                        mMainView.getBannerDataError()
-//                    }
-//
-//                    override fun onMessage(errorCode: Int, msg: String) {
-//                    }
-//
-//                })
-    }
+    fun getUserInfo(requestParam: InitDataNoParamRequest) {
+        val dealData = HttpUtil.getInstance().dataDealWith(GsonUtils.toJson(requestParam))
 
+        val observable1 = RetrofitHelper.createRequest(RequestInterface::class.java).getUserInfo(dealData)
+
+        HttpUtil.getInstance().request(observable1, object : HttpUtil.OnResultListener<Translation1> {
+            override fun onSuccess(result: Translation1) {
+                LogUtils.e("===============getUserInfo==========onSuccess=========")
+                //                System.out.println(result.getTranslateResult().get(0).get(0).getTgt());
+            }
+
+            override fun onError(error: Throwable) {
+                LogUtils.e("===============getUserInfo=============onError======")
+            }
+
+            override fun onMessage() {
+
+            }
+        })
+    }
 
 
     /**

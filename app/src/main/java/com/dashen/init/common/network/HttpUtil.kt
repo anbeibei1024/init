@@ -2,7 +2,7 @@ package com.dashen.init.common.newNetwork
 
 import com.dashen.demeter.common.utils.NetUtils
 import com.dashen.init.App
-import com.dashen.init.base.ResultBean
+import com.dashen.init.common.network.model.ResultBean
 import com.dashen.init.common.newNetwork.exception.ErrorType
 import com.dashen.init.common.newNetwork.exception.ExceptionEngine
 import com.dashen.utils.LogUtils
@@ -34,7 +34,7 @@ object HttpUtil {
 
             override fun onNext(bean: ResultBean<T>) {
                 resultListener.onSuccess(bean.data)
-                resultListener.onMessage(bean.errorCode!!.toInt(), bean.message ?: "----exception---后台没给传message--")
+                resultListener.onMessage(bean.errcode!!.toInt(), bean.message ?: "----exception---后台没给传message--")
             }
 
             override fun onError(error: Throwable) {

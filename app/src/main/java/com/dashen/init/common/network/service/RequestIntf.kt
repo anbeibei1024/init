@@ -1,6 +1,6 @@
 package com.dashen.init.common.newNetwork.service
 
-import com.dashen.init.base.ResultBean
+import com.dashen.init.common.network.model.ResultBean
 import com.dashen.init.common.newNetwork.model.*
 import com.dashen.init.common.newNetwork.request.EditUserInfoRequest
 import io.reactivex.Observable

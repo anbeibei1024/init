@@ -18,3 +18,8 @@ data class RegisterRequset(
 )
 
 data class SendCodeRequest(val mobile:String = "")
+
+
+data class InitDataNoParamRequest(
+        val userId: String = ""
+)
