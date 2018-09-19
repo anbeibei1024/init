@@ -54,26 +54,13 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
         receiveBroadCast()
         initView()
         initData()
-        LogUtils.e("===============onCreate===================" + this.javaClass.simpleName)
+        LogUtils.e("===================onCreate===================" + this.javaClass.simpleName)
     }
 
     /**
      * 获取布局id
-
-     * @return
      */
     protected abstract val layoutId: Int
-
-    /**
-     * 注册广播接收
-     */
-    private fun receiveBroadCast() {
-        netBroadCast = NetBroadcastReceiver(this)
-        val filter = IntentFilter()
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(netBroadCast, filter)
-    }
-
 
     /**
      * 初始化控件
@@ -84,6 +71,16 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
      * 初始化数据
      */
     protected abstract fun initData()
+
+    /**
+     * 注册广播接收
+     */
+    private fun receiveBroadCast() {
+        netBroadCast = NetBroadcastReceiver(this)
+        val filter = IntentFilter()
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        this.registerReceiver(netBroadCast, filter)
+    }
 
 
     /**
