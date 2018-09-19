@@ -38,8 +38,8 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".view.activity.TestActivity"-->
-            <!--android:theme="@style/SplashTheme"/>-->
+        <activity android:name=".view.activity.TestActivity"
+            android:theme="@style/SplashTheme"/>
         <activity android:name=".view.activity.SplashActivity" />
         <!--<activity android:name=".view.activity.MainActivity" />-->
         <activity android:name=".view.activity.LoginActivity" />

@@ -210,8 +210,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
     override fun onDestroy() {
         super.onDestroy()
         LogUtils.e("===============onDestroy===================" + this.javaClass.simpleName)
-        netBroadCast!!.remove(this)//移除广播
-//        App.refWatcher!!.watch(this)
+        netBroadCast?.remove(this)//移除广播
     }
 
     override fun onClick(v: View) {

@@ -116,7 +116,6 @@ abstract class BaseFragment : Fragment(), View.OnClickListener, EasyPermissions.
 
     override fun onDestroy() {
         super.onDestroy()
-//        App.refWatcher!!.watch(this)
     }
 
     override fun onClick(v: View) {
