@@ -72,7 +72,7 @@ dependencies {
 
     //图片加载
     implementation 'com.facebook.fresco:fresco:1.10.0'
-//    //状态栏
+//    //状态栏 用本地的statusBarUtil 对应下面的库 （只一个util类和两id）
 //    implementation 'com.jaeger.statusbarutil:library:1.5.1'
     //权限管理
     implementation 'pub.devrel:easypermissions:1.3.0'
