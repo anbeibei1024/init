@@ -4,6 +4,7 @@ package com.dashen.init.common.networkJava.request;
 import com.dashen.init.common.network.model.ResultBean;
 import com.dashen.init.common.networkJava.model.Translation;
 import com.dashen.init.common.networkJava.model.Translation1;
+import com.dashen.init.common.networkJava.model.UserInfoBean;
 
 import java.util.HashMap;
 
@@ -21,6 +22,8 @@ public interface RequestInterface {
 
     @GET("api/login/selectUser.do")
     Observable<ResultBean<Translation1>> getUserInfo(@QueryMap HashMap<String, String> map);
+    @GET("api/login/selectUser.do")
+    Observable<ResultBean<UserInfoBean>> getUserInfo1(@QueryMap HashMap<String, String> map);
 
 
     @GET("ajax.php?a=fy&f=auto&t=auto&w=hello%20world")

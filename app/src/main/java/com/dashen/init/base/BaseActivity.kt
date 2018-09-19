@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
@@ -16,7 +15,6 @@ import com.dashen.init.App
 import com.dashen.init.R
 import com.dashen.init.common.utils.ActivityManagerUtils
 import com.dashen.init.common.utils.StatusBarUtil
-import com.dashen.init.common.utils.StatusUiTextUtils
 import com.dashen.init.view.broadcast.NetBroadcastReceiver
 import com.dashen.utils.LogUtils
 import kotlinx.android.synthetic.main.head_view.*

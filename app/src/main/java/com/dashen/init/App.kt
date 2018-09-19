@@ -10,6 +10,7 @@ import com.facebook.common.util.ByteConstants
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.cache.MemoryCacheParams
 import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.squareup.leakcanary.LeakCanary
 
 /**
  * Created by anbeibei on 2018/4/8.
@@ -34,6 +35,21 @@ class App : MultiDexApplication() {
         super.onCreate()
         application = this
         sp = getSharedPreferences(Constant.FILE_NAME, Context.MODE_PRIVATE)
+
+        initLeakCanary()
+    }
+
+
+    /**
+     * 初始化内存泄漏检测工具
+     */
+    private fun initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return
+        }
+        LeakCanary.install(this)
     }
 
 
@@ -43,7 +59,7 @@ class App : MultiDexApplication() {
      */
     fun getSharedPreferences(): SharedPreferences = sp!!
 
-    fun getLoginStatus():Boolean{
+    fun getLoginStatus(): Boolean {
         return isLogin
     }
 
