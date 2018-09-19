@@ -63,4 +63,7 @@
     <dimen name="s56">56sp</dimen>
 
 
+    <!--headView-->
+    <dimen name="s_head_title">18sp</dimen>
+    <dimen name="s_head_left_right">15sp</dimen>
 </resources>

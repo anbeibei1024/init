@@ -19,6 +19,7 @@ import com.dashen.init.common.utils.StatusBarUtil
 import com.dashen.init.common.utils.StatusUiTextUtils
 import com.dashen.init.view.broadcast.NetBroadcastReceiver
 import com.dashen.utils.LogUtils
+import kotlinx.android.synthetic.main.head_view.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -264,103 +265,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
             return false
         }
 
-    /**
-     * 1.设置全屏状态栏，图片在状态栏上
-     */
-    fun setStatusBarFull(`object`: Any, statusbarApha: Int, view: View?) {
-        setStatusBarFull(`object`, statusbarApha, view, true)
-    }
-
-    fun setStatusBarFull(`object`: Any, statusbarApha: Int, view: View?, isDarkColor: Boolean) {
-        if (`object` is BaseFragment) {
-            StatusBarUtil.setTranslucentForImageViewInFragment(this, statusbarApha, view)//顶部图片展示在顶部
-        } else if (`object` is BaseActivity) {
-            StatusBarUtil.setTranslucentForImageView(this, 0, null)//顶部图片展示在顶部
-        }
-        setUiTextColor(isDarkColor)
-    }
-
-    /**
-     * 2.设置全屏状态栏背景在状态栏上
-     */
-    fun setStatusBarBgFull() {
-        setStatusBarBgFull(true)
-    }
-
-    fun setStatusBarBgFull(isDarkColor: Boolean) {
-        StatusBarUtil.setTransparent(this)//顶部背景色展示在顶部
-        setUiTextColor(isDarkColor)
-    }
-
-    /**
-     * 3.设置非全屏状态栏，图片或文字在状态栏下
-     */
-    fun setStatusBarColor(colorId: Int, statusbarApha: Int) {
-        setStatusBarColor(colorId, statusbarApha, true)
-    }
-
-    fun setStatusBarColor(colorId: Int, statusbarApha: Int, isDarkColor: Boolean) {
-        val b = setUiTextColor(false)
-        if (!b) {
-            StatusBarUtil.setColor(this, colorId, statusbarApha)
-        } else {
-            StatusBarUtil.setColor(this, colorId, 0)
-        }
-        setUiTextColor(isDarkColor)
-    }
-
-    /**
-     * 4.设置全屏状态栏,状态栏文字颜色不变，半透明
-     */
-    fun setStatusBarFullHalf() {
-        setStatusBarFullHalf(true)
-    }
-
-    fun setStatusBarFullHalf(isDarkColor: Boolean) {
-        StatusBarUtil.setTranslucentForImageView(this, null)
-        setUiTextColor(isDarkColor)
-    }
-
-    /**
-     * 设置状态栏
-     */
-    fun setUiTextColor(isFull: Boolean): Boolean {
-        var isAdaptation = false
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//4.4以上系统仅对魅族，小米做过适配
-            if (StatusUiTextUtils.FlymeSetStatusBarLightMode(this.window, isFull)) {
-                isAdaptation = true
-                LogUtils.e("===============Flyme======Flyme==============" + isAdaptation)
-            } else {
-                isAdaptation = StatusUiTextUtils.MIUISetStatusBarLightMode(this.window, isFull)
-                LogUtils.e("===============MiUi======MiUi==============" + isAdaptation)
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0系统改变字体颜色
-            if (isFull) {
-                this.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            } else {
-                this.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_VISIBLE
-            }
-            isAdaptation = true
-        }
-        return isAdaptation
-    }
-
-    /**
-     * 设置状态栏文本颜色
-     */
-    fun setStatusTextColor(isDark: Boolean) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//4.4以上系统仅对魅族，小米做过适配
-            StatusUiTextUtils.FlymeSetStatusBarLightMode(this.window, isDark)
-            StatusUiTextUtils.MIUISetStatusBarLightMode(this.window, isDark)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//6.0系统改变字体颜色
-            if (isDark) {
-                this.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            } else {
-                this.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_VISIBLE
-            }
-        }
-    }
-
     companion object {
         private val TAG = BaseActivity::class.java.simpleName
     }
@@ -410,5 +314,34 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
      */
     open fun setStatusBar() {
         StatusBarUtil.setColor(this, resources.getColor(R.color.colorPrimary), 0)
+    }
+
+    /**
+     * 初始化标题栏
+     *
+     * 默认格式   左 返回键  中 标题  右 无
+     *
+     * 调用 initHeadView（title）即可
+     *
+     */
+    protected fun initHeadView(title: String, leftText: String? = null, rightText: String? = null, rightIv: Int = 0) {
+        if (!leftText.isNullOrEmpty()) {
+            head_iv_back.visibility = View.GONE
+            head_tv_left.text = leftText
+            head_tv_left.visibility = View.VISIBLE
+        } else {
+            head_iv_back.visibility = View.VISIBLE
+            head_iv_back.setOnClickListener { finish() }
+        }
+
+        if (!rightText.isNullOrEmpty()) {
+            head_tv_right.text = rightText
+            head_tv_right.visibility = View.VISIBLE
+        } else if (rightIv != 0) {
+            head_iv_right.setImageResource(rightIv)
+            head_iv_right.visibility = View.VISIBLE
+        }
+
+        head_tv_title.text = title
     }
 }

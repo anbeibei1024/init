@@ -9,14 +9,7 @@
 
 
     <!--该应用-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         tools:node="remove" />
@@ -45,9 +38,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.TestActivity"
-            android:theme="@style/SplashTheme"/>
+        <!--<activity android:name=".view.activity.TestActivity"-->
+            <!--android:theme="@style/SplashTheme"/>-->
         <activity android:name=".view.activity.SplashActivity" />
+        <!--<activity android:name=".view.activity.MainActivity" />-->
         <activity android:name=".view.activity.LoginActivity" />
     </application>
 
