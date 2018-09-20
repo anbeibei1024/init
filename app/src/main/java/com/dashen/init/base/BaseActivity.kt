@@ -30,7 +30,7 @@ import pub.devrel.easypermissions.EasyPermissions
  * 类描述：activity基类(所有类都继承自这)
  * 备注：
  */
-abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
+abstract class BaseActivity : AppCompatActivity(),
         NetBroadcastReceiver.NetEvevt, EasyPermissions.PermissionCallbacks {
     var mApp: App? = null
     var sp: SharedPreferences? = null
@@ -273,5 +273,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
         ActivityManagerUtils.instance.killActivity(this)
         overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
     }
+
 
 }

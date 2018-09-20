@@ -20,10 +20,10 @@ class MainActivity : BaseActivity(), MainView {
 
         mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
 
-//        tv.setOnClickListener {
-//            startActivity(TestActivity::class.java)
-////            RxBus.instance.post(MessageEvent(Constant.MINE_MODIFY_INFO, ""))
-//        }
+        tv.setOnClickListener {
+            startActivity(SettingActivity::class.java)
+//            RxBus.instance.post(MessageEvent(Constant.MINE_MODIFY_INFO, ""))
+        }
     }
 
     override fun initData() {
