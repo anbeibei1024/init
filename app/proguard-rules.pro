@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#BugOut 混淆
+-dontwarn cn.testin.analysis.**
+-keep class cn.testin.analysis.** {*;}
+
+-keep public class * extends android.content.ContentProvider
+-keepnames class * extends android.view.View
+#BugOut 混淆

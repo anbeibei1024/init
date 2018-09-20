@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import cn.testin.analysis.bug.BugOutApi
 import com.dashen.demeter.common.utils.NetUtils
 import com.dashen.init.App
 import com.dashen.init.R
@@ -49,7 +50,7 @@ abstract class BaseActivity : AppCompatActivity(),
         setContentView(layoutId)
         //acitivity管理类
         ActivityManagerUtils.instance.addActivity(this)
-//        Bugout.init(this, Constant.BUGOUT_APPKEY)
+//        Bugout.init(this, Constant.bugOutAK)
         //网络状态监听
         receiveBroadCast()
         initView()
@@ -93,40 +94,7 @@ abstract class BaseActivity : AppCompatActivity(),
         overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
     }
 
-    override fun onResume() {
-        super.onResume()
-        //初始化Logutils的tag
-        LogUtils.setTag(this.javaClass.simpleName)
-        LogUtils.e("===============onResume===================" + this.javaClass.simpleName)
-        //注：回调 1
-//        Bugout.onResume(this)
-//        if (!isContainFragment) {
-//            MobclickAgent.onPageStart(TAG) //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
-//        }
-//        MobclickAgent.onResume(this)          //统计时长
-    }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        //注：回调 3
-//        Bugout.onDispatchTouchEvent(this, event)
-        return super.dispatchTouchEvent(event)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        LogUtils.e("===============onPause===================" + this.javaClass.simpleName)
-//        if (!isContainFragment) {
-//            MobclickAgent.onPageEnd(TAG) // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
-//        }
-//        MobclickAgent.onPause(this)
-//        //注：回调 2
-//        Bugout.onPause(this)
-        //隐藏软键盘
-        val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (this.currentFocus != null) {
-            mInputMethodManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, 0)
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -274,5 +242,39 @@ abstract class BaseActivity : AppCompatActivity(),
         overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
     }
 
+    override fun onResume() {
+        super.onResume()
+        BugOutApi.onResume(this) //BugOut3个回调监听用户操作步骤 注：回调 1
 
+
+        //初始化Logutils的tag
+        LogUtils.setTag(this.javaClass.simpleName)
+        LogUtils.e("===============onResume===================" + this.javaClass.simpleName)
+//        if (!isContainFragment) {
+//            MobclickAgent.onPageStart(TAG) //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
+//        }
+//        MobclickAgent.onResume(this)          //统计时长
+    }
+
+    override fun onPause() {
+        super.onPause()
+        BugOutApi.onPause(this) //BugOut3个回调监听用户操作步骤 注：回调 2
+
+
+        LogUtils.e("===============onPause===================" + this.javaClass.simpleName)
+//        if (!isContainFragment) {
+//            MobclickAgent.onPageEnd(TAG) // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
+//        }
+//        MobclickAgent.onPause(this)
+        //隐藏软键盘
+        val mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (this.currentFocus != null) {
+            mInputMethodManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, 0)
+        }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        BugOutApi.onPause(this) //BugOut3个回调监听用户操作步骤 注：回调 3
+        return super.dispatchTouchEvent(event)
+    }
 }

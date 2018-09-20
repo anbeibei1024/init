@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.support.multidex.MultiDexApplication
+import cn.testin.analysis.data.TestinDataApi
+import cn.testin.analysis.data.TestinDataConfig
 import com.dashen.init.common.constant.Constant
 import com.facebook.cache.disk.DiskCacheConfig
 import com.facebook.common.util.ByteConstants
@@ -11,6 +13,8 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.cache.MemoryCacheParams
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.squareup.leakcanary.LeakCanary
+
+
 
 /**
  * Created by anbeibei on 2018/4/8.
@@ -37,6 +41,7 @@ class App : MultiDexApplication() {
         sp = getSharedPreferences(Constant.FILE_NAME, Context.MODE_PRIVATE)
 
         initLeakCanary()
+        initBugOut()
     }
 
 
@@ -50,6 +55,21 @@ class App : MultiDexApplication() {
             return
         }
         LeakCanary.install(this)
+    }
+
+    /**
+     * 初始化BugOut
+     */
+    private fun initBugOut() {
+        //设置启动参数
+        val bugOutConfig = TestinDataConfig()
+                .openShake(true)//设置是否打开摇一摇反馈bug功能
+                .collectCrash(true)//设置是否收集app崩溃信息
+                .collectANR(true)//设置是否收集ANR异常信息
+                .collectLogCat(false)//设置是否收集logcat系统日志
+                .collectUserSteps(true)//设置是否收集用户操作步骤
+        //SDK初始化
+        TestinDataApi.init(this, Constant.bugOutAK, bugOutConfig)
     }
 
 

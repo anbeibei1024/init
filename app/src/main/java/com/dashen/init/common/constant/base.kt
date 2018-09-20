@@ -27,7 +27,7 @@ object Constant {
 
     val FILE_NAME = App.context.packageName//包名存储
     /**=============================三方平台key============================== */
-    val BUGOUT_APPKEY = "28ade283a41de5e9fee28467a1d4e606"
+    const val bugOutAK = "0a6819de78b36be54eecd7b3a3cde76b"
     var UMENG_KEY = "5aaf6fa8f43e48346500018e"
 
     /**
