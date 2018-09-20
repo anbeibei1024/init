@@ -63,7 +63,7 @@ class App : MultiDexApplication() {
     private fun initBugOut() {
         //设置启动参数
         val bugOutConfig = TestinDataConfig()
-                .openShake(true)//设置是否打开摇一摇反馈bug功能
+                .openShake(false)//设置是否打开摇一摇反馈bug功能
                 .collectCrash(true)//设置是否收集app崩溃信息
                 .collectANR(true)//设置是否收集ANR异常信息
                 .collectLogCat(false)//设置是否收集logcat系统日志
