@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--避免OverDraw 所有界面xml中不需要再设置背景色-->
+        <item name="android:windowBackground">@color/base_background</item>
     </style>
     <!--设置-全屏 windowBackground 为默认 -->
     <style name="FullScreenTheme" parent="AppTheme">
