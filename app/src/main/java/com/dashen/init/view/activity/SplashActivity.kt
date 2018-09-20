@@ -3,6 +3,7 @@ package com.dashen.init.view.activity
 import android.Manifest
 import android.content.Intent
 import android.os.Handler
+import android.view.View
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
 import com.dashen.init.common.constant.Constant
@@ -19,16 +20,17 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 
 class SplashActivity : BaseActivity() {
+
     private val mPerms = arrayOf(Manifest.permission.RECORD_AUDIO,
             Manifest.permission.READ_EXTERNAL_STORAGE)
 
     private var handler: Handler? = Handler()
     private var runnable: Runnable? = Runnable {
         if (mApp!!.getLoginStatus()) {
-//            startActivityFinish(MainActivity::class.java)
-            startActivityFinish(LoginActivity::class.java)
+            startActivity(MainActivity::class.java, isFinish = true)
         } else {
-            startActivityFinish(LoginActivity::class.java)
+            startActivity(MainActivity::class.java, isFinish = true)
+//            startActivity(LoginActivity::class.java, isFinish = true)
         }
     }
 
@@ -38,7 +40,8 @@ class SplashActivity : BaseActivity() {
         get() = R.layout.activity_splash
 
     override fun initView() {
-        checkPermission()
+        enterHomeActivity()
+//        checkPermission()
     }
 
     private fun enterHomeActivity() {

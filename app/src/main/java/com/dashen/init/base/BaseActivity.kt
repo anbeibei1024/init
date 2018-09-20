@@ -83,82 +83,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
     }
 
 
-    /**
-     * 初始化跳转
-     */
-    fun startActivity(cls: Class<*>) {
-        val intent = Intent(this, cls)
-        startActivity(intent)
-        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
-    }
-
-    /**
-     * 初始化跳转
-     */
-    fun startActivity(cls: Class<*>, isAnim: Boolean) {
-        val intent = Intent(this, cls)
-        startActivity(intent)
-        if (isAnim) {
-            overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
-        }
-    }
-
-    /**
-     * 初始化跳转
-     */
-    fun startActivity(cls: Class<*>, bundle: Bundle) {
-        val intent = Intent(this, cls)
-        intent.putExtras(bundle)
-        startActivity(intent)
-        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
-    }
-
-    protected fun startActivityForResult(cls: Class<*>, requestCode: Int) {
-        val intent = Intent(this, cls)
-        startActivityForResult(intent, requestCode)
-    }
-
-    protected fun startActivityForResult(cls: Class<*>, bundle: Bundle, requestCode: Int) {
-        val intent = Intent(this, cls)
-        intent.putExtras(bundle)
-        startActivityForResult(intent, requestCode)
-    }
-
-    protected fun startActivityForResult(cls: Class<*>, bundle: Bundle) {
-        val intent = Intent(this, cls)
-        intent.putExtras(bundle)
-        startActivityForResult(intent, 0)
-    }
-
-    /**
-     * 初始化跳转
-     */
-    fun startActivityFinish(cls: Class<*>) {
-        val intent = Intent(this, cls)
-        startActivity(intent)
-        startFinish()
-    }
-
-    /**
-     *start后finish
-     */
-    fun startFinish() {
-        super.finish()
-        ActivityManagerUtils.instance.killActivity(this)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-    }
-
-    /**
-     * 初始化跳转
-     */
-    fun startActivityFinish(cls: Class<*>, bundle: Bundle) {
-        val intent = Intent(this, cls)
-        intent.putExtras(bundle)
-        startActivity(intent)
-        startFinish()
-    }
-
-
     fun onSuperBackPressed() {
         super.onBackPressed()
     }
@@ -210,24 +134,8 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
         netBroadCast?.remove(this)//移除广播
     }
 
-    override fun onClick(v: View) {
-    }
-
-    /**
-     * finish()和ActivityManagerUtils.getInstance().killActivity(this);二选一用
-     */
-    override fun finish() {
-        super.finish()
-        ActivityManagerUtils.instance.killActivity(this)
-//        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
-
-    }
-
-
     /**
      * 网络变化监听
-
      * @param netMobile
      */
     override fun onNetChange(netMobile: Int) {
@@ -338,4 +246,32 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener,
 
         head_tv_title.text = title
     }
+
+    /**
+     * 跳转页面
+     */
+    fun startActivity(cls: Class<*>, bundle: Bundle? = null, isFinish: Boolean = false) {
+        val intent = Intent(this, cls)
+        bundle?.let { intent.putExtras(bundle) }
+        startActivity(intent)
+        if (isFinish)
+            ActivityManagerUtils.instance.killActivity(this)
+        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
+    }
+
+    fun startActivityForResult(cls: Class<*>, requestCode: Int, bundle: Bundle? = null) {
+        val intent = Intent(this, cls)
+        bundle?.let { intent.putExtras(bundle) }
+        startActivityForResult(intent, requestCode)
+    }
+
+    /**
+     * finish()和ActivityManagerUtils.getInstance().killActivity(this);二选一用
+     */
+    override fun finish() {
+        super.finish()
+        ActivityManagerUtils.instance.killActivity(this)
+        overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
+    }
+
 }
