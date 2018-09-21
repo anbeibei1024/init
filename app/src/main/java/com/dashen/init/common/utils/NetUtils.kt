@@ -26,10 +26,10 @@ object NetUtils {
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
 
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-            when (activeNetworkInfo.type) {
-                ConnectivityManager.TYPE_WIFI -> return NETWORK_WIFI
-                ConnectivityManager.TYPE_MOBILE -> return NETWORK_MOBILE
-                else -> return NETWORK_NONE
+            return when (activeNetworkInfo.type) {
+                ConnectivityManager.TYPE_WIFI -> NETWORK_WIFI
+                ConnectivityManager.TYPE_MOBILE -> NETWORK_MOBILE
+                else -> NETWORK_NONE
             }
         }
         return NETWORK_NONE

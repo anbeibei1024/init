@@ -22,9 +22,6 @@ import java.io.File
  * Created by beibei on 2018/3/15.
  */
 object HttpUtil {
-    /**
-     *  所有的请求
-     */
     fun <T> request(observable: Observable<ResultBean<T>>, resultListener: OnResultListener<T>) {
         setSubscriber(observable, object : Observer<ResultBean<T>> {
             override fun onComplete() {
@@ -36,7 +33,7 @@ object HttpUtil {
 
             override fun onNext(bean: ResultBean<T>) {
                 resultListener.onSuccess(bean.data)
-                resultListener.onMessage(bean.errcode!!.toInt(), bean.message ?: "----exception---后台没给传message--")
+                resultListener.onMessage(bean.errcode, bean.message ?: "----exception---后台没给传message--")
             }
 
             override fun onError(error: Throwable) {
