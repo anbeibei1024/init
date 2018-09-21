@@ -1,6 +1,7 @@
 package com.dashen.init.common.newNetwork.service
 
 import com.dashen.init.common.network.model.ResultBean
+import com.dashen.init.common.networkJava.model.UserInfoBean
 import com.dashen.init.common.newNetwork.model.*
 import com.dashen.init.common.newNetwork.request.EditUserInfoRequest
 import io.reactivex.Observable
@@ -99,4 +100,7 @@ interface RequestIntf {
     //获取验证码
     @GET("appnew/{id}/sentence")
     fun sentenceDetails(@Path("id") id: Int, @Header("token") token: String): Observable<ResultBean<SentenceDetailsBean?>>
+
+    @GET("api/login/selectUser.do")
+    fun getUserInfo1(@QueryMap map: HashMap<String, String>): Observable<ResultBean<UserInfoBean?>>
 }

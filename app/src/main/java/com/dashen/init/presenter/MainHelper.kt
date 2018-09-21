@@ -28,9 +28,32 @@ import java.lang.ref.WeakReference
  */
 class MainHelper(var context: Context, val mMainView: MainView, lifecycle: Lifecycle) : LifecycleObserver {
     private val mContext: WeakReference<Context> = WeakReference(context)
+
     private var exitTime: Long = 0//退出时间记录
+    private lateinit var lifecycle: Lifecycle
 
     fun getUserInfo(requestParam: InitDataNoParamRequest) {
+//        val dealData = HttpUtil.dealData(GsonUtils.toJson(requestParam))
+//        HttpUtil.request(RetrofitHelper.getRequest(RequestIntf::class.java).getUserInfo1(dealData),
+//                object : HttpUtil.OnResultListener<UserInfoBean?> {
+//                    override fun onSuccess(t: UserInfoBean?) {
+//                        LogUtils.e("-------refreshAvatar--t--" + t?.userUrl)
+//                        mMainView.setText(t?.realName?:"---")
+//                    }
+//
+//                    override fun onError(error: Throwable, msg: String) {
+//                        LogUtils.e("-----------$msg")
+//                        ToastUtils.showToast(context, msg)
+//
+////                        mView.onUserInfoError(error, msg)
+//                    }
+//
+//                    override fun onMessage(errorCode: Int, msg: String) {
+//                        LogUtils.e("-----------$msg")
+//                    }
+//                })
+
+
         val dealData = HttpUtil.getInstance().dataDealWith(GsonUtils.toJson(requestParam))
 
         val observable1 = RetrofitHelper.createRequest(RequestInterface::class.java).getUserInfo1(dealData)
@@ -39,9 +62,7 @@ class MainHelper(var context: Context, val mMainView: MainView, lifecycle: Lifec
             override fun onSuccess(result: UserInfoBean) {
                 LogUtils.e("===============getUserInfo==========onSuccess=========")
                 //                System.out.println(result.getTranslateResult().get(0).get(0).getTgt());
-                android.os.Handler().postDelayed({
-                    mMainView.setText(result.realName)
-                }, 10000)
+                mMainView.setText(result.realName)
 
             }
 
@@ -55,12 +76,16 @@ class MainHelper(var context: Context, val mMainView: MainView, lifecycle: Lifec
         })
     }
 
+//    //然后再相应的回调方法中使用下面代码判断，保证数据回调回来，当前activity是存在的
+//    if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+//        //这里只是示例，不一定是CREATED
+//    }
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         LogUtils.d("onActivityCreate")
     }
-
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {

@@ -31,13 +31,12 @@ import pub.devrel.easypermissions.EasyPermissions
  * 类描述：activity基类(所有类都继承自这)
  * 备注：
  */
-abstract class BaseActivity : AppCompatActivity(),
-        NetBroadcastReceiver.NetEvevt, EasyPermissions.PermissionCallbacks {
+abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetChangeListener, EasyPermissions.PermissionCallbacks {
+    private var netBroadCastReceiver: NetBroadcastReceiver? = null//网络状态监听的广播接受者
+    private var netWorkState: Int = NetUtils.NETWORK_NONE// 网络状态类型 默认无网
+
     var mApp: App? = null
     var sp: SharedPreferences? = null
-    //网络状态监听
-    private var netBroadCast: NetBroadcastReceiver? = null//网络监听
-    var netMobile: Int = -1// 网络类型(1.wifi 0.mobile -1.无网)
     var isContainFragment: Boolean = false//是否包含fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +50,7 @@ abstract class BaseActivity : AppCompatActivity(),
         //acitivity管理类
         ActivityManagerUtils.instance.addActivity(this)
 //        Bugout.init(this, Constant.bugOutAK)
-        //网络状态监听
-        receiveBroadCast()
+
         initView()
         initData()
         LogUtils.e("===================onCreate===================" + this.javaClass.simpleName)
@@ -73,16 +71,6 @@ abstract class BaseActivity : AppCompatActivity(),
      */
     protected abstract fun initData()
 
-    /**
-     * 注册广播接收
-     */
-    private fun receiveBroadCast() {
-        netBroadCast = NetBroadcastReceiver(this)
-        val filter = IntentFilter()
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        this.registerReceiver(netBroadCast, filter)
-    }
-
 
     fun onSuperBackPressed() {
         super.onBackPressed()
@@ -92,51 +80,6 @@ abstract class BaseActivity : AppCompatActivity(),
         ActivityManagerUtils.instance.killActivity(this)
         //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out)
-    }
-
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        LogUtils.e("===============onDestroy===================" + this.javaClass.simpleName)
-        netBroadCast?.remove(this)//移除广播
-    }
-
-    /**
-     * 网络变化监听
-     * @param netMobile
-     */
-    override fun onNetChange(netMobile: Int) {
-        this.netMobile = netMobile
-    }
-
-    /**
-     * 初始化时判断有没有网络
-     */
-    fun inspectNet(): Boolean {
-        this.netMobile = NetUtils.getNetWorkState(this@BaseActivity)
-        return isNetConnect
-    }
-
-    /**
-     * 判断有无网络 。
-
-     * @return true 有网, false 没有网络.
-     */
-    private val isNetConnect: Boolean
-        get() {
-            if (netMobile == 1) {
-                return true
-            } else if (netMobile == 0) {
-                return true
-            } else if (netMobile == -1) {
-                return false
-            }
-            return false
-        }
-
-    companion object {
-        private val TAG = BaseActivity::class.java.simpleName
     }
 
     fun setFragmentFlag(flag: Boolean) {
@@ -276,5 +219,62 @@ abstract class BaseActivity : AppCompatActivity(),
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         BugOutApi.onPause(this) //BugOut3个回调监听用户操作步骤 注：回调 3
         return super.dispatchTouchEvent(event)
+    }
+
+    /**
+     * 注册网络状态监听的广播接收者
+     *
+     * 在需要关注网络状态式调用，不需要每个界面都调用
+     */
+    fun registerNetBroadcastReceiver() {
+        netBroadCastReceiver = NetBroadcastReceiver(this)
+        val filter = IntentFilter()
+        filter.addAction(android.net.ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(netBroadCastReceiver, filter)
+    }
+
+    /**
+     * 网络状态变化监听
+     * @param netWorkState
+     */
+    override fun onNetChange(netWorkState: Int) {
+        this.netWorkState = netWorkState
+        if (getCurrentNetStatus()) {
+            reConnectNet()
+        }
+    }
+
+    /**
+     * 获取当前是否为联网状态
+     *
+     * 需要在当前界面注册网络广播
+     */
+    fun getCurrentNetStatus(): Boolean {
+        return isNetConnect
+    }
+
+    /**
+     * 当前的联网状态
+     */
+    private val isNetConnect: Boolean
+        get() {
+            return when (netWorkState) {
+                NetUtils.NETWORK_WIFI -> true
+                NetUtils.NETWORK_MOBILE -> true
+                NetUtils.NETWORK_NONE -> false
+                else -> false
+            }
+        }
+
+    /**
+     * 有的页面，当网络重新连接时，需刷新时，复写该方法
+     */
+    open fun reConnectNet() {
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LogUtils.e("===============onDestroy===================" + this.javaClass.simpleName)
+        netBroadCastReceiver?.remove(this)
     }
 }

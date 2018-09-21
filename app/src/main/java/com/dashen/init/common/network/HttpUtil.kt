@@ -2,9 +2,11 @@ package com.dashen.init.common.newNetwork
 
 import com.dashen.demeter.common.utils.NetUtils
 import com.dashen.init.App
+import com.dashen.init.common.constant.Constant
 import com.dashen.init.common.network.model.ResultBean
 import com.dashen.init.common.newNetwork.exception.ErrorType
 import com.dashen.init.common.newNetwork.exception.ExceptionEngine
+import com.dashen.init.common.utils.SignUtil
 import com.dashen.utils.LogUtils
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -73,6 +75,20 @@ object HttpUtil {
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer)
+    }
+
+
+//    去掉
+    fun dealData(data: String): HashMap<String, String> {
+        LogUtils.e("--OkHttp---data-" + data)
+        val partner = Constant.PARTNER
+        val sign = SignUtil.dataDealWith(data)
+
+        val hashMap = HashMap<String, String>()
+        hashMap.put("data", data)
+        hashMap.put("partner", partner)
+        hashMap.put("sign", sign)
+        return hashMap
     }
 
     //接口回调

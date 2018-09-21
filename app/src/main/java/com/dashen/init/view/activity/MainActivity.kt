@@ -6,6 +6,7 @@ import com.dashen.init.common.networkJava.request.InitDataNoParamRequest
 import com.dashen.init.common.utils.StatusBarUtil
 import com.dashen.init.presenter.MainHelper
 import com.dashen.init.presenter.viewinter.MainView
+import com.dashen.utils.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), MainView {
@@ -17,11 +18,14 @@ class MainActivity : BaseActivity(), MainView {
     override fun initView() {
         mMainHelper = MainHelper(this, this, lifecycle)
         lifecycle.addObserver(mMainHelper!!)
+        registerNetBroadcastReceiver()
 
         mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
 
         tv.setOnClickListener {
-            startActivity(SettingActivity::class.java)
+//            startActivity(SettingActivity::class.java)
+            val inspectNet = getCurrentNetStatus()
+            ToastUtils.showToast(this, "-----" + inspectNet.toString())
 //            RxBus.instance.post(MessageEvent(Constant.MINE_MODIFY_INFO, ""))
         }
     }
@@ -37,4 +41,7 @@ class MainActivity : BaseActivity(), MainView {
         tv.text = "______$type"
     }
 
+    override fun reConnectNet() {
+        mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
+    }
 }
