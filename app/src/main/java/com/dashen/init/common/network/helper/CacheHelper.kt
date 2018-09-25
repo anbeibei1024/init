@@ -15,7 +15,7 @@ class CacheHelper private constructor() {
     private var mCache: Cache? = null
 
     init {
-        cacheFile = File(App.context.cacheDir.absolutePath, "mycache")
+        cacheFile = File(App.context.cacheDir.absolutePath, "HttpCache")
         if (!cacheFile!!.exists()) {
             cacheFile!!.mkdir()
         }
@@ -32,7 +32,7 @@ class CacheHelper private constructor() {
     companion object {
         //设置缓存目录
         private var cacheFile: File? = null
-        private val maxSize = (8 * 1024 * 1024).toLong()
+        private const val maxSize = (8 * 1024 * 1024).toLong()
         private var helper: CacheHelper? = null
 
         val instance: CacheHelper

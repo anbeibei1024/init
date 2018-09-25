@@ -15,23 +15,27 @@ class OkHttpClientHelper private constructor() {
     private var mClient: OkHttpClient? = null
 
     //获取OKHttpClicent对象
-    //                    .cache(cache)      //设置缓存
     val okHttpClient: OkHttpClient
         get() {
             if (mClient == null) {
+
+                val interceptor = HttpLoggingInterceptor()
+                interceptor.level = if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                }
+
+
                 mClient = OkHttpClient.Builder()
+                        .cache(cache)      //设置缓存
+                        .addInterceptor(interceptor)
                         .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                         .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                         .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
 //                        .addInterceptor(BasicParamsInterceptor.Builder()
 //                                .addHeaderParam("token", Constant.TOKEN)
 //                                .build())
-                        .addInterceptor(HttpLoggingInterceptor().
-                                setLevel(if (BuildConfig.DEBUG) {
-                                    HttpLoggingInterceptor.Level.BODY
-                                } else {
-                                    HttpLoggingInterceptor.Level.NONE
-                                }))
                         .build()
             }
             return mClient!!
