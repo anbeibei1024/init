@@ -8,7 +8,7 @@ import com.dashen.init.common.networkJava.model.UserInfoBean
 import com.dashen.init.common.networkJava.request.InitDataNoParamRequest
 import com.dashen.init.common.newNetwork.HttpUtil
 import com.dashen.init.common.newNetwork.helper.RetrofitHelper
-import com.dashen.init.common.newNetwork.service.RequestIntf
+import com.dashen.init.common.newNetwork.service.ApiService
 import com.dashen.init.presenter.viewinter.MainView
 import com.dashen.utils.GsonUtils
 import com.dashen.utils.LogUtils
@@ -35,7 +35,7 @@ class MainHelper(var context: Context, val mMainView: MainView, lifecycle: Lifec
 
     fun getUserInfo(requestParam: InitDataNoParamRequest) {
         val dealData = HttpUtil.dealData(GsonUtils.toJson(requestParam))
-        HttpUtil.request(RetrofitHelper.getRequest(RequestIntf::class.java).getUserInfo1(dealData),
+        HttpUtil.request(RetrofitHelper.createApiRequest(ApiService::class.java).getUserInfo1(dealData),
                 object : HttpUtil.OnResultListener<UserInfoBean?> {
                     override fun onSuccess(t: UserInfoBean?) {
                         LogUtils.e("-------refreshAvatar--t--" + t?.userUrl)

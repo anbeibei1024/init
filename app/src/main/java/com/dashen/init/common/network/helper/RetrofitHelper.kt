@@ -45,7 +45,7 @@ class RetrofitHelper private constructor() {
             }
 
         // 步骤5：创建 网络请求接口 的实例
-        fun <T> getRequest(clazz: Class<T>): T {
+        fun <T> createApiRequest(clazz: Class<T>): T {
             return RetrofitHelper.instance
                     .getRetrofit()
                     .create(clazz)

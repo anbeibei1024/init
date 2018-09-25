@@ -26,7 +26,7 @@ Put 与 Post 请求的区别 http://blog.csdn.net/mad1989/article/details/791826
 参数注解  @Url   直接传入一个请求的 URL变量 用于URL设置
  */
 
-interface RequestIntf {
+interface ApiService {
 
     //get请求 无参数
     // 查询用户中心的用户信息 审核通过的语料库数量 libCount 用户总积分 totalPoint 已完成任务数 taskCount  GET
