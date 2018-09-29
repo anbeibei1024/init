@@ -63,8 +63,8 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1' //检测Fragment
 
     //bug管理
-    compile 'cn.testin.analysis:testin-data:5.0.1'//添加 BugOut SDK基础库依赖
-    compile 'cn.testin.analysis:bugout:1.0.1-beta'//添加 BugOut SDK依赖
+    implementation 'cn.testin.analysis:testin-data:5.0.6'//添加 BugOut SDK基础库依赖
+    implementation 'cn.testin.analysis:bugout:1.0.4'//添加 BugOut SDK依赖
 
     //网络
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
