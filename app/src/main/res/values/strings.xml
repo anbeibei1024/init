@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">初始庫</string>
+    <string name="app_name">初始库</string>
 
     <!--通用-->
     <string name="permission_need">"该应用需要定位权限，请确认设置开启"</string>

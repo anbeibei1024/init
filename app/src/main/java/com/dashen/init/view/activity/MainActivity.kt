@@ -23,9 +23,14 @@ class MainActivity : BaseActivity(), MainView {
         mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
 
         tv.setOnClickListener {
-//            startActivity(SettingActivity::class.java)
-            val inspectNet = getCurrentNetStatus()
-            ToastUtils.showToast(this, "-----" + inspectNet.toString())
+            startActivity(PermissionActivity::class.java)
+
+
+//            val inspectNet = getCurrentNetStatus()
+//            ToastUtils.showToast(this, "-----" + inspectNet.toString())
+
+
+
 //            RxBus.instance.post(MessageEvent(Constant.MINE_MODIFY_INFO, ""))
         }
     }
