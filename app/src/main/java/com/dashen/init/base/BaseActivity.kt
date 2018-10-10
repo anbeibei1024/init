@@ -1,7 +1,9 @@
 package com.dashen.init.base
 
-import android.Manifest
-import android.content.*
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -135,9 +137,13 @@ abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetCha
      */
     fun showPermissionSetting(permissionName: String, functionName: String) {
         AlertDialog.Builder(this)
-                .setTitle(getString(R.string.permission_title))
-                .setMessage("在设置-应用-${getString(R.string.app_name)}-权限中开启$permissionName,以正常使用$functionName")
-                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which -> dialog.dismiss() }
+//                .setTitle(getString(R.string.permission_title))
+//                .setMessage("在设置-应用-${getString(R.string.app_name)}-权限中开启$permissionName，以正常$functionName")
+                .setMessage("${getString(R.string.app_name)}向您申请$permissionName，以$functionName")//仿高德
+                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which ->
+                    dialog.dismiss()
+                    (this as? SplashActivity)?.finish()
+                }
                 .setPositiveButton(getString(R.string.permission_setting)) { dialog, which ->
                     val mIntent = Intent()
                     mIntent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS

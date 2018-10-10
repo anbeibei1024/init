@@ -3,7 +3,6 @@ package com.dashen.init.view.activity
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
 import com.dashen.init.common.constant.Constant
@@ -17,7 +16,7 @@ import com.dashen.init.common.constant.Constant
 
 class SplashActivity : BaseActivity() {
     private val mPerms = arrayOf(
-            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
@@ -52,13 +51,21 @@ class SplashActivity : BaseActivity() {
                     for (i in 0 until grantResults.size) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             isAllPermission = false
+                            when (permissions[i]) {
+                                mPerms[0] -> {
+                                    showPermissionSetting("相机权限", "保障头像设置功能的正常使用")
+                                }
+
+                                mPerms[1], mPerms[2] -> {
+                                    showPermissionSetting("存储权限", "读写个性化信息等")
+                                }
+                            }
+                            break
                         }
                     }
 
                     if (isAllPermission) {
                         enterHomeActivity()
-                    } else {
-                        showPermissionSetting("读取联系人权限，读写存储", "应用")
                     }
                 }
             }
@@ -83,19 +90,19 @@ class SplashActivity : BaseActivity() {
 //                    } else {
 //                        when (noPermission) {
 //                            mPerms[0] -> {
-//                                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
-//                                    showPermissionRationale("该功能需要读取联系人权限，请授权后使用", Constant.REQUEST_CODE_EXTERNAL_STORAGE, *mPerms)
-//                                } else {
-//                                    showPermissionSetting("读取联系人权限", "打开联系人功能")
-//                                }
+////                                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+////                                    showPermissionRationale("该功能需要读取联系人权限，请授权后使用", Constant.REQUEST_CODE_EXTERNAL_STORAGE, *mPerms)
+////                                } else {
+//                                showPermissionSetting("相机权限", "保障头像设置功能的正常使用")
+////                                }
 //                            }
 //
 //                            mPerms[1], mPerms[2] -> {
-//                                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
-//                                    showPermissionRationale("该应用需要读写存储权限，请授权后使用", Constant.REQUEST_CODE_EXTERNAL_STORAGE, *mPerms)
-//                                } else {
-//                                    showPermissionSetting("读写存储权限", "正常使用应用")
-//                                }
+////                                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+////                                    showPermissionRationale("该应用需要读写存储权限，请授权后使用", Constant.REQUEST_CODE_EXTERNAL_STORAGE, *mPerms)
+////                                } else {
+//                                showPermissionSetting("存储权限", "读写个性化信息等")
+////                                }
 //                            }
 //                        }
 //                    }

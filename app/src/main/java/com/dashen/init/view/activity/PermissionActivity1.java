@@ -63,9 +63,9 @@ public class PermissionActivity1 extends BaseActivity {
                     openContact();
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
-                        showPermissionRationale("该功能需要读取联系人权限，请授权后使用", MY_PERMISSIONS_REQUEST_READ_CONTACTS, Manifest.permission.READ_CONTACTS);
+                        showPermissionRationale("该功能需要通讯录权限，请授权后使用", MY_PERMISSIONS_REQUEST_READ_CONTACTS, Manifest.permission.READ_CONTACTS);
                     } else {
-                        showPermissionSetting("读取联系人权限", "打开联系人功能");
+                        showPermissionSetting("通讯录权限", "打开联系人功能");
                     }
                 }
                 return;
