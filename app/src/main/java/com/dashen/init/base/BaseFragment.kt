@@ -1,17 +1,23 @@
 package com.dashen.init.base
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dashen.init.App
 import com.dashen.init.R
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 
 /**
  * 项目名称：demeter
@@ -21,7 +27,7 @@ import pub.devrel.easypermissions.EasyPermissions
  * 类描述：fragment基类
  * 备注：
  */
-abstract class BaseFragment : Fragment(), View.OnClickListener, EasyPermissions.PermissionCallbacks {
+abstract class BaseFragment : Fragment(), View.OnClickListener {
     /**
      * 获取fragment中view
 
@@ -66,10 +72,9 @@ abstract class BaseFragment : Fragment(), View.OnClickListener, EasyPermissions.
      */
     protected abstract fun initData()
 
-
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-        this.activity = activity as BaseActivity?
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        this.activity = activity
     }
 
     /**
@@ -121,39 +126,56 @@ abstract class BaseFragment : Fragment(), View.OnClickListener, EasyPermissions.
     override fun onClick(v: View) {
 
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-    //申请权限成功
-    override fun onPermissionsGranted(requestCode: Int, list: List<String>) {
-        // Some permissions have been granted
-        // ...
-    }
-
-    //申请权限失败(和deniedDialog一起使用)
-    override fun onPermissionsDenied(requestCode: Int, list: List<String>) {
-        // Some permissions have been denied
-        // ...
+    /*-------权限-----*/
+    /**
+     * 检测是否有权限
+     *
+     * 返回 true 有权限 false 没有权限，请求权限
+     *
+     */
+    fun checkHasPermission(readContacts: String, requestCode: Int): Boolean {
+        if (ContextCompat.checkSelfPermission(activity!!, readContacts) == PackageManager.PERMISSION_GRANTED) {
+            return true
+        } else {
+            ActivityCompat.requestPermissions(activity!!, arrayOf(readContacts), requestCode)
+        }
+        return false
     }
 
     /**
-     * 请求权限失败时调用
-
-     * @param perms
-     * *
-     * @param details
+     * 权限被拒绝--用户没有选择不再询问 -- 说明一下需要权限的原因
      */
-    fun deniedDialog(perms: List<String>, details: String) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            AppSettingsDialog.Builder(this)
-                    .setTitle(getString(R.string.permission_title))
-                    .setPositiveButton(getString(R.string.permission_setting))
-                    .setNegativeButton(getString(R.string.permission_cancle))
-                    .build()
-                    .show()
-        }
+    fun showPermissionRationale(explainReason: String, requestCode: Int) {
+        AlertDialog.Builder(activity!!)
+//                .setTitle("权限申请说明")
+                .setMessage(explainReason)
+                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.permission_grant)) { dialog, which ->
+                    ActivityCompat.requestPermissions(activity!!,
+                            arrayOf(Manifest.permission.READ_CONTACTS),
+                            requestCode)
+                }
+                .show()
     }
+
+
+    /**
+     * 权限被拒绝--用户选择了不再询问 -- 让用户去设置界面开启权限
+     */
+    fun showPermissionSetting(permissionName: String, functionName: String) {
+        AlertDialog.Builder(activity!!)
+                .setTitle(getString(R.string.permission_title))
+                .setMessage("在设置-应用-${getString(R.string.app_name)}-权限中开启$permissionName,以正常使用$functionName")
+                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.permission_setting)) { dialog, which ->
+                    val mIntent = Intent()
+                    mIntent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    mIntent.data = Uri.fromParts("package", activity?.packageName, null)
+                    startActivity(mIntent)
+                }
+                .show()
+    }
+
+
 }

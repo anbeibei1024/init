@@ -1,11 +1,17 @@
 package com.dashen.init.base
 
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.SharedPreferences
+import android.Manifest
+import android.content.*
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.support.annotation.Size
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
@@ -16,12 +22,10 @@ import com.dashen.init.App
 import com.dashen.init.R
 import com.dashen.init.common.utils.ActivityManagerUtils
 import com.dashen.init.common.utils.StatusBarUtil
+import com.dashen.init.view.activity.SplashActivity
 import com.dashen.init.view.broadcast.NetBroadcastReceiver
 import com.dashen.utils.LogUtils
 import kotlinx.android.synthetic.main.head_view.*
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
-
 
 /**
  * 项目名称：demeter-Android
@@ -31,7 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions
  * 类描述：activity基类(所有类都继承自这)
  * 备注：
  */
-abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetChangeListener, EasyPermissions.PermissionCallbacks {
+abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetChangeListener {
     private var netBroadCastReceiver: NetBroadcastReceiver? = null//网络状态监听的广播接受者
     private var netWorkState: Int = NetUtils.NETWORK_NONE// 网络状态类型 默认无网
 
@@ -86,37 +90,62 @@ abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetCha
         this.isContainFragment = flag
     }
 
-
     /*-------权限-----*/
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    /**
+     * 检测是否有权限
+     */
+
+    fun hasPermissions(@Size(min = 1) vararg perms: String): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true
+        }
+        for (perm in perms) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
     }
 
-    //申请权限成功
-    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        // Some permissions have been granted
-        // ...
-    }
-
-    //申请权限失败(和deniedDialog一起使用)
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        // Some permissions have been denied
-        // ...
+    fun requestPermissions(requestCode: Int, @Size(min = 1) vararg perms: String) {
+        ActivityCompat.requestPermissions(this,
+                perms,
+                requestCode)
     }
 
     /**
-     * 请求权限失败时调用
-     *
-     * @param details 要求的理由
+     * 权限被拒绝--用户没有选择不再询问 -- 说明一下需要权限的原因
      */
-    fun deniedDialog(details: String) {
-        AppSettingsDialog.Builder(this)
+    fun showPermissionRationale(explainReason: String, requestCode: Int, @Size(min = 1) vararg perms: String) {
+        AlertDialog.Builder(this)
+//                .setTitle("权限申请说明")
+                .setMessage(explainReason)
+                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.permission_grant)) { dialog, which ->
+                    ActivityCompat.requestPermissions(this,
+                            perms,
+                            requestCode)
+                }
+                .show()
+    }
+
+
+    /**
+     * 权限被拒绝--用户选择了不再询问 -- 让用户去设置界面开启权限
+     */
+    fun showPermissionSetting(permissionName: String, functionName: String) {
+        AlertDialog.Builder(this)
                 .setTitle(getString(R.string.permission_title))
-                .setPositiveButton(getString(R.string.permission_setting))
-                .setRationale(details)
-                .setNegativeButton(getString(R.string.permission_cancle))
-                .build()
+                .setMessage("在设置-应用-${getString(R.string.app_name)}-权限中开启$permissionName,以正常使用$functionName")
+                .setNegativeButton(getString(R.string.permission_cancel)) { dialog, which -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.permission_setting)) { dialog, which ->
+                    val mIntent = Intent()
+                    mIntent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    mIntent.data = Uri.fromParts("package", packageName, null)
+                    startActivity(mIntent)
+                    (this as? SplashActivity)?.finish()
+                }
                 .show()
     }
 

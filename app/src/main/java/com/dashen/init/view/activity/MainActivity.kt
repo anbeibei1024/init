@@ -23,7 +23,8 @@ class MainActivity : BaseActivity(), MainView {
         mMainHelper?.getUserInfo(InitDataNoParamRequest("126"))
 
         tv.setOnClickListener {
-            startActivity(PermissionActivity::class.java)
+//            startActivity(PermissionActivity::class.java)
+            startActivity(PermissionActivity1::class.java)
 
 
 //            val inspectNet = getCurrentNetStatus()

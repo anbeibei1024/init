@@ -38,7 +38,7 @@ object Constant {
     /**
      * 请求权限返回码
      */
-   const val REQUEST_PERMISSION1 = 0
+   const val REQUEST_CODE_EXTERNAL_STORAGE = 0
 
     /**==================界面数据传递标识==(100-199)================================= */
 

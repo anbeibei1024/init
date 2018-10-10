@@ -70,10 +70,10 @@ public class PermissionActivity extends Activity {
                     // contacts-related task you need to do.
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity, Manifest.permission.READ_CONTACTS)) {
-//                        showRationale1();
+//                        showPermissionRationale();
                         snackBarReason();
                     } else {
-//                        showRationale();
+//                        showPermissionSetting();
                         snackBarSetting();
                     }
                     // permission denied, boo! Disable the

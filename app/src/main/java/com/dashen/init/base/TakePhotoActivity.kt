@@ -70,7 +70,7 @@
 //    }
 //
 //    override fun invoke(invokeParam: InvokeParam): PermissionManager.TPermissionType {
-//        val type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.method!!)
+//        val type = PermissionManager.hasPermissions(TContextWrap.of(this), invokeParam.method!!)
 //        if (PermissionManager.TPermissionType.WAIT == type) {
 //            this.invokeParam = invokeParam
 //        }

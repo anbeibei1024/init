@@ -2,15 +2,12 @@
     <string name="app_name">初始库</string>
 
     <!--通用-->
-    <string name="permission_need">"该应用需要定位权限，请确认设置开启"</string>
-
-
-
     <string name="main_text_twice">再按一次退出程序</string>
-    <string name="permission_setting">设置</string>
-    <string name="setting_cache_default">0.00M</string>
-    <string name="permission_cancle">取消</string>
     <string name="permission_title">权限请求</string>
+    <string name="permission_cancel">取消</string>
+    <string name="permission_grant">确定</string>
+    <string name="permission_setting">去设置</string>
+    <string name="setting_cache_default">0.00M</string>
     <string name="sf_tv_suggestion_feedback">我要反馈</string>
     <string name="sf_et_feedback_hint">请输入反馈内容(500字以内)</string>
     <string name="sf_btn_send_suggestion_feedback">发送</string>
