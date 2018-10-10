@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,14 +30,14 @@ import com.dashen.utils.ToastUtils;
 public class PermissionActivity extends Activity {
     private Activity thisActivity;
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
+    Button button;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
         thisActivity = this;
-
-        Button button = findViewById(R.id.button);
+        button = findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +70,11 @@ public class PermissionActivity extends Activity {
                     // contacts-related task you need to do.
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity, Manifest.permission.READ_CONTACTS)) {
-                        showRationale1();
+//                        showRationale1();
+                        snackBarReason();
                     } else {
-                        showRationale();
+//                        showRationale();
+                        snackBarSetting();
                     }
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -93,10 +97,10 @@ public class PermissionActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent mIntent = new Intent();
+                mIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                mIntent.setData(Uri.fromParts("package", thisActivity.getPackageName(), null));
-                thisActivity.startActivity(mIntent);
+                mIntent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(mIntent);
 
             }
         });
@@ -131,5 +135,46 @@ public class PermissionActivity extends Activity {
             }
         });
         builder.show();
+    }
+
+    /**
+     * 模仿知乎用snackBar
+     */
+
+    private void snackBarReason() {
+        Snackbar.make(button, "获取相机权限失败，请授权后使用。", Snackbar.LENGTH_INDEFINITE)
+                .setActionTextColor(getResources().getColor(R.color.color_white))
+                .setAction("授权", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityCompat.requestPermissions(thisActivity,
+                                new String[]{Manifest.permission.READ_CONTACTS},
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                    }
+                })
+                .show();
+    }
+
+
+    /**
+     * 模仿知乎用snackBar
+     */
+    private void snackBarSetting() {
+        final Snackbar snackbar = Snackbar.make(button, "您永久禁止了该权限，如需授权请到应用设置中主动打开读取联系人权限。", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(getResources().getColor(R.color.color_red));
+        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.base_green));
+
+        snackbar.setAction("去设置", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                snackbar.dismiss();
+                Intent mIntent = new Intent();
+                mIntent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mIntent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(mIntent);
+            }
+        });
+        snackbar.show();
     }
 }
