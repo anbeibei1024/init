@@ -37,7 +37,8 @@ import kotlinx.android.synthetic.main.head_view.*
  * 类描述：activity基类(所有类都继承自这)
  * 备注：
  */
-abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetChangeListener {
+abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetChangeListener,
+        View.OnClickListener {
     private var netBroadCastReceiver: NetBroadcastReceiver? = null//网络状态监听的广播接受者
     private var netWorkState: Int = NetUtils.NETWORK_NONE// 网络状态类型 默认无网
 
@@ -76,6 +77,8 @@ abstract class BaseActivity : AppCompatActivity(), NetBroadcastReceiver.OnNetCha
      * 初始化数据
      */
     protected abstract fun initData()
+
+    override fun onClick(v: View) {}
 
 
     fun onSuperBackPressed() {

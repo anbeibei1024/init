@@ -6,4 +6,9 @@
 
     <include layout="@layout/head_view" />
 
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d50"
+        android:text="检查更新" />
 </LinearLayout>

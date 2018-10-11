@@ -103,4 +103,9 @@ interface ApiService {
 
     @GET("api/login/selectUser.do")
     fun getUserInfo1(@QueryMap map: HashMap<String, String>): Observable<ResultBean<UserInfoBean?>>
+
+
+    //get请求 无参数
+    @GET("api/version/getVersionInfo.do")
+    fun getUpdateInfo(@QueryMap map: HashMap<String, String>): Observable<ResultBean<UpdateBean?>>
 }

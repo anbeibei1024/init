@@ -6,7 +6,6 @@ import com.dashen.init.common.networkJava.request.InitDataNoParamRequest
 import com.dashen.init.common.utils.StatusBarUtil
 import com.dashen.init.presenter.MainHelper
 import com.dashen.init.presenter.viewinter.MainView
-import com.dashen.utils.ToastUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), MainView {
@@ -24,7 +23,8 @@ class MainActivity : BaseActivity(), MainView {
 
         tv.setOnClickListener {
 //            startActivity(PermissionActivity::class.java)
-            startActivity(PermissionActivity1::class.java)
+//            startActivity(PermissionActivity1::class.java)
+            startActivity(SettingActivity::class.java)
 
 
 //            val inspectNet = getCurrentNetStatus()

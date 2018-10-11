@@ -22,6 +22,9 @@
     <!--该应用-->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <!--<uses-permission-->
     <!--android:name="android.permission.ACCESS_COARSE_LOCATION"-->
     <!--tools:node="remove" />-->
@@ -63,6 +66,17 @@
         <activity android:name=".view.activity.SettingActivity" />
         <activity android:name=".view.activity.PermissionActivity" />
         <activity android:name=".view.activity.PermissionActivity1" />
+        <activity android:name=".common.network.appUpdate.AndroidOPermissionActivity"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

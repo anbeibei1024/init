@@ -23,6 +23,18 @@ data class LoginDataBean(
         val token: String = ""
 )
 
+
+/**
+ * 版本更新
+ */
+data class UpdateBean(
+        val isUpdate: String, //是否有新版本（0-否 1-是）
+        val isForce: String,
+        val downloadUrl: String,
+        val versionCode: String
+)
+
+
 data class PushAdBean(
         val msgId: Int = 0,
         val picUrl: String = "",

@@ -23,3 +23,8 @@ data class SendCodeRequest(val mobile:String = "")
 data class InitDataNoParamRequest(
         val userId: String = ""
 )
+
+//版本更新
+data class VersionUpdateRequest(
+        val versionCode: String = ""
+)
