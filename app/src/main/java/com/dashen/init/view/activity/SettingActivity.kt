@@ -4,11 +4,14 @@ import android.view.View
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
 import com.dashen.init.common.network.appUpdate.AppDownloadManager
+import com.dashen.init.common.network.appUpdate.HProgressDialogUtils
 import com.dashen.init.common.newNetwork.model.UpdateBean
 import com.dashen.init.common.newNetwork.request.VersionUpdateRequest
 import com.dashen.init.common.utils.SystemUtil
 import com.dashen.init.presenter.SettingHelper
 import com.dashen.init.presenter.viewinter.SettingView
+import com.dashen.utils.LogUtil
+import com.dashen.utils.LogUtils
 import com.dashen.utils.ToastUtils
 import kotlinx.android.synthetic.main.layout_setting.*
 
@@ -64,6 +67,17 @@ class SettingActivity : BaseActivity(), SettingView {
     override fun getUpdateInfoSuccess(it: UpdateBean) {
         ToastUtils.showToast(this, "要更新")
         mDownloadManager.downloadApk(it.downloadUrl, "titleAA", "desc")
+        mDownloadManager.setUpdateListener { currentByte, totalByte ->
+            if (currentByte == 0) {
+                HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
+            }
+            HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
+            if (currentByte == totalByte) {
+                HProgressDialogUtils.cancel()
+            }
+        }
+
+
 //        if (it.isUpdate == "1") {
 //            tv_version_hint.text = "发现新版本"
 //            view_point.visibility = View.VISIBLE
