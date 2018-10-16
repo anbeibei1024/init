@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/head_view" />
 
-    <TextView
-        android:id="@+id/tv"
+    <LinearLayout
+        android:id="@+id/ll_version"
         android:layout_width="match_parent"
         android:layout_height="@dimen/d50"
-        android:text="检查更新" />
+        android:layout_marginTop="@dimen/d10"
+        android:background="@drawable/bg_white_click_wave"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/d16"
+        android:paddingRight="@dimen/d16">
+
+        <TextView
+            android:layout_width="@dimen/d0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="版本更新"
+            android:textColor="@color/color_text_content"
+            android:textSize="@dimen/s14" />
+
+        <TextView
+            android:id="@+id/tv_version_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_text_unimportant"
+            android:textSize="@dimen/s14"
+            tools:text="发现新版本" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_next" />
+
+    </LinearLayout>
+
 </LinearLayout>

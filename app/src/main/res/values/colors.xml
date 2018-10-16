@@ -21,6 +21,7 @@
     <!--背景色-->
     <color name="base_background">#F0F0F0</color>
     <color name="base_background_light">#FAFAFA</color>
+    <color name="base_ripple">#f0f0f0</color>
 
     <!--常用色值-->
     <color name="color_bg">#f0f0f0</color>

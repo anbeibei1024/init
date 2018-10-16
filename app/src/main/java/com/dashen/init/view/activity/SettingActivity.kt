@@ -35,17 +35,17 @@ class SettingActivity : BaseActivity(), SettingView {
 
         mHelper = SettingHelper(this, this, lifecycle)
         mDownloadManager = AppDownloadManager(this)
-        tv.setOnClickListener(this)
+        ll_version.setOnClickListener(this)
     }
 
     override fun initData() {
-        mHelper?.getUpdateInfo(VersionUpdateRequest(SystemUtil.getAppVersionName(this)))
+
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.tv -> {
-
+            R.id.ll_version -> {
+                mHelper?.getUpdateInfo(VersionUpdateRequest(SystemUtil.getAppVersionName(this)))
             }
         }
     }
@@ -65,30 +65,17 @@ class SettingActivity : BaseActivity(), SettingView {
     }
 
     override fun getUpdateInfoSuccess(it: UpdateBean) {
-        ToastUtils.showToast(this, "要更新")
-        mDownloadManager.downloadApk(it.downloadUrl, "titleAA", "desc")
+        mDownloadManager.downloadApk(it.downloadUrl, getString(R.string.app_name), "")
+        HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
         mDownloadManager.setUpdateListener { currentByte, totalByte ->
-            if (currentByte == 0) {
-                HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
-            }
             HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
+            LogUtils.e("--------------"+Math.round((currentByte.toFloat() / totalByte) * 100))
             if (currentByte == totalByte) {
                 HProgressDialogUtils.cancel()
             }
         }
-
-
-//        if (it.isUpdate == "1") {
-//            tv_version_hint.text = "发现新版本"
-//            view_point.visibility = View.VISIBLE
-//        } else {
-//            tv_version_hint.text = ""
-//            view_point.visibility = View.GONE
-//        }
-//        mUpdateBean = it
     }
 
-//    override fun getUpdateInfoMessage(errorCode: Int, msg: String) {
-//        DialogUtils.stopLoading()
-//    }
+    override fun getUpdateInfoMessage(errorCode: Int, msg: String) {
+    }
 }

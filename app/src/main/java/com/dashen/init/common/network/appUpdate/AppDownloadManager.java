@@ -28,7 +28,7 @@ public class AppDownloadManager {
     private DownloadManager mDownloadManager;
     private DownloadChangeObserver mDownLoadChangeObserver;
     private DownloadReceiver mDownloadReceiver;
-    private long mReqId;
+    private long mReqId;//标识当前下载任务的id，即downloadId。
     private OnUpdateListener mUpdateListener;
 
     public AppDownloadManager(Activity activity) {
