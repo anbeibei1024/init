@@ -10,7 +10,7 @@ object Constant {
     /**=============================服务器加密============================== */
 
     const val HOST = "http://111.207.84.82:8088/"//测试域名
-//    const val HOST = "http://fanyi.youdao.com/"//测试域名
+    //    const val HOST = "http://fanyi.youdao.com/"//测试域名
     var MOBILE = ""//用户id
     var TOKEN = "201804072213289532d872b5e096b40858e3e9b96bea01bb8"
     var PHOTO = ""//用户昵称
@@ -19,7 +19,7 @@ object Constant {
     /**
      * 验签partner,key
      */
-    const  val PARTNER = "1000001"
+    const val PARTNER = "1000001"
     /**
      * 验签key
      */
@@ -35,10 +35,12 @@ object Constant {
     /**
      * ==========================公共标识==(0-99)============================
      */
+    const val NEW_VERSION_APK_DOWNLOAD_ID = "NewVersionApkDownloadId"
+
     /**
      * 请求权限返回码
      */
-   const val REQUEST_CODE_EXTERNAL_STORAGE = 0
+    const val REQUEST_CODE_EXTERNAL_STORAGE = 0
 
     /**==================界面数据传递标识==(100-199)================================= */
 

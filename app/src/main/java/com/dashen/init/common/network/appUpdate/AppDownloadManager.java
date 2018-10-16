@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,6 +18,8 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.dashen.init.common.constant.Constant;
+import com.dashen.init.common.utils.SharedPreferencesUtils;
 import com.dashen.utils.LogUtils;
 import com.dashen.utils.ToastUtils;
 
@@ -43,6 +47,45 @@ public class AppDownloadManager {
     }
 
     public void downloadApk(String apkUrl, String title, String desc) {
+        //如果sp中有记录下载的新版本的apk
+        long downloadId = (long) SharedPreferencesUtils.INSTANCE.get(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, -1L);
+        if (downloadId != -1) {
+            //存在downloadId
+            DownLoadUtils downLoadUtils = DownLoadUtils.getInstance(weakReference.get());
+            //获取当前状态
+            int status = downLoadUtils.getDownloadStatus(downloadId);
+            if (DownloadManager.STATUS_SUCCESSFUL == status) {
+                //状态为下载成功
+                //获取下载路径URI
+                Uri downloadUri = downLoadUtils.getDownloadUri(downloadId);
+                if (null != downloadUri) {
+                    //存在下载的APK，如果两个APK相同，启动更新界面。否之则删除，重新下载。
+                    if (compare(getApkInfo(weakReference.get(), downloadUri.getPath()), weakReference.get())) {
+
+                        Intent intent = new Intent();
+                        intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
+                        installApk(weakReference.get(), intent);
+//                        startInstall(weakReference.get(), downloadUri);
+                        return;
+                    } else {
+                        //删除下载任务以及文件
+                        downLoadUtils.getDownloadManager().remove(downloadId);
+                    }
+                }
+                downloadStart(apkUrl, title, desc);
+            } else if (DownloadManager.STATUS_FAILED == status) {
+                //下载失败,重新下载
+                downloadStart(apkUrl, title, desc);
+            } else {
+                LogUtils.e("apk is already downloading");
+            }
+        } else {
+            //不存在downloadId，没有下载过APK
+            downloadStart(apkUrl, title, desc);
+        }
+    }
+
+    private void downloadStart(String apkUrl, String title, String desc) {
         // fix bug : 装不了新版本，在下载之前应该删除已有文件
         File apkFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk");
 
@@ -66,6 +109,13 @@ public class AppDownloadManager {
         request.setMimeType("application/vnd.android.package-archive");
         //
         mReqId = mDownloadManager.enqueue(request);
+        DownLoadUtils downLoadUtils = DownLoadUtils.getInstance(weakReference.get());
+        Uri downloadUri = downLoadUtils.getDownloadUri(mReqId);
+        LogUtils.e("————————" + downloadUri);
+        if (downloadUri != null) {
+            LogUtils.e("————————" + downloadUri.getPath());
+        }
+        SharedPreferencesUtils.INSTANCE.put(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, mReqId);
     }
 
     /**
@@ -186,13 +236,13 @@ public class AppDownloadManager {
     private void installApk(Context context, Intent intent) {
         long completeDownLoadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-        LogUtils.e( "收到广播");
+        LogUtils.e("收到广播");
         Uri uri;
         Intent intentInstall = new Intent();
         intentInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentInstall.setAction(Intent.ACTION_VIEW);
 
-        if (completeDownLoadId == mReqId) {
+//        if (completeDownLoadId == mReqId) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { // 6.0以下
                 uri = mDownloadManager.getUriForDownloadedFile(completeDownLoadId);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) { // 6.0 - 7.0
@@ -210,7 +260,7 @@ public class AppDownloadManager {
 
             intentInstall.setDataAndType(uri, "application/vnd.android.package-archive");
             context.startActivity(intentInstall);
-        }
+//        }
     }
 
     //通过downLoadId查询下载的apk，解决6.0以后安装的问题
@@ -245,4 +295,52 @@ public class AppDownloadManager {
 
         void permissionFail();
     }
+
+    /**
+     * 比较两个APK的信息
+     *
+     * @param apkInfo
+     * @param context
+     * @return
+     */
+    private static boolean compare(PackageInfo apkInfo, Context context) {
+
+        if (null == apkInfo) {
+            return false;
+        }
+        String localPackageName = context.getPackageName();
+//        if (localPackageName.equals(apkInfo.packageName)) {
+        if ("com.joyou.smartcity".equals(apkInfo.packageName)) {
+            try {
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(localPackageName, 0);
+                //比较当前APK和下载的APK版本号
+                if (apkInfo.versionCode > packageInfo.versionCode) {
+                    //如果下载的APK版本号大于当前安装的APK版本号，返回true
+                    return true;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 获取APK程序信息
+     *
+     * @param context
+     * @param path
+     * @return
+     */
+    private static PackageInfo getApkInfo(Context context, String path) {
+
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pi = pm.getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES);
+        if (null != pi) {
+            return pi;
+        }
+        return null;
+    }
+
 }
