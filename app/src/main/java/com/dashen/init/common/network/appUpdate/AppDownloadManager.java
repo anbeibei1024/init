@@ -2,26 +2,19 @@ package com.dashen.init.common.network.appUpdate;
 
 import android.app.Activity;
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.content.FileProvider;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.dashen.init.common.constant.Constant;
 import com.dashen.init.common.utils.SharedPreferencesUtils;
 import com.dashen.utils.LogUtils;
-import com.dashen.utils.ToastUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -42,52 +35,40 @@ public class AppDownloadManager {
         mDownloadReceiver = new DownloadReceiver();
     }
 
-    public void downloadApk(String apkUrl, String title, String desc) {
+    /**
+     * 是否下载过的最新的apk文件
+     *
+     * @return true 下载过 直接安装
+     */
+    public boolean existNewVersionApk() {
         //如果sp中有记录下载的新版本的apk
         long downloadId = (long) SharedPreferencesUtils.INSTANCE.get(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, -1L);
-        if (downloadId != -1) {
-            //存在downloadId
+        if (downloadId != -1) {   //存在downloadId
             DownLoadUtils downLoadUtils = DownLoadUtils.getInstance(weakReference.get());
-            //获取当前状态
-            int status = downLoadUtils.getDownloadStatus(downloadId);
-            if (DownloadManager.STATUS_SUCCESSFUL == status) {
-                //状态为下载成功
-                //获取下载路径URI
-                Uri downloadUri = downLoadUtils.getDownloadUri(downloadId);
-                if (null != downloadUri) {
-                    //存在下载的APK，如果两个APK相同，启动更新界面。否之则删除，重新下载。
-                    if (downLoadUtils.compare(downLoadUtils.getApkInfo(weakReference.get()), weakReference.get())) {
-//                    if (downLoadUtils.compare(downLoadUtils.getApkInfo(weakReference.get(), downloadUri), weakReference.get())) {
-                        Intent intent = new Intent();
-                        intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
-                        downLoadUtils.installApk(weakReference.get(), intent);
-//                        startInstall(weakReference.get(), downloadUri);
-                        return;
-                    } else {
-                        //删除下载任务以及文件
-//                        downLoadUtils.getDownloadManager().remove(downloadId);
-                    }
+            int status = downLoadUtils.getDownloadStatus(downloadId); //获取当前状态
+            if (DownloadManager.STATUS_SUCCESSFUL == status) {   //状态为下载成功
+                //存在下载的APK，如果两个APK相同，启动更新界面。否之则删除，重新下载。
+                if (downLoadUtils.compareVersionCode(downLoadUtils.getApkInfo(weakReference.get()), weakReference.get())) {
+                    Intent intent = new Intent();
+                    intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
+                    downLoadUtils.installApk(weakReference.get(), intent);
+                    return true;
+                } else {
+                    //删除下载任务以及文件
+                    downLoadUtils.getDownloadManager().remove(downloadId);
+                    SharedPreferencesUtils.INSTANCE.put(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, -1);
                 }
-                downloadStart(apkUrl, title, desc);
-            } else if (DownloadManager.STATUS_FAILED == status) {
-                //下载失败,重新下载
-                downloadStart(apkUrl, title, desc);
-            } else {
-                LogUtils.e("apk is already downloading");
             }
-        } else {
-            //不存在downloadId，没有下载过APK
-            downloadStart(apkUrl, title, desc);
         }
+        return false;
     }
 
     /**
      * 下载正式开始
      */
-    private void downloadStart(String apkUrl, String title, String desc) {
+    public void downloadStart(String apkUrl, String title, String desc) {
         // fix bug : 装不了新版本，在下载之前应该删除已有文件
         File apkFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk");
-
         if (apkFile != null && apkFile.exists()) {
             apkFile.delete();
         }
@@ -106,14 +87,7 @@ public class AppDownloadManager {
         // request.setDestinationInExternalPublicDir("/codoon/","codoon_health.apk");
 
         request.setMimeType("application/vnd.android.package-archive");
-        //
         mReqId = mDownloadManager.enqueue(request);
-        DownLoadUtils downLoadUtils = DownLoadUtils.getInstance(weakReference.get());
-        Uri downloadUri = downLoadUtils.getDownloadUri(mReqId);
-        LogUtils.e("————————" + downloadUri);
-        if (downloadUri != null) {
-            LogUtils.e("————————" + downloadUri.getPath());
-        }
         SharedPreferencesUtils.INSTANCE.put(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, mReqId);
     }
 
@@ -195,7 +169,7 @@ public class AppDownloadManager {
     /**
      * 对应{@link Activity#onPause()} ()}
      */
-    public void onPause() {
+    public void onDestroy() {
         weakReference.get().getContentResolver().unregisterContentObserver(mDownLoadChangeObserver);
         weakReference.get().unregisterReceiver(mDownloadReceiver);
     }

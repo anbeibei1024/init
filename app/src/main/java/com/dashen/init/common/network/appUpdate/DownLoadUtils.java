@@ -226,14 +226,13 @@ public class DownLoadUtils {
     }
 
     /**
-     * 比较两个APK的信息
+     * 比较两个APK的包名和版本号信息
      *
-     * @param apkInfo
+     * @param apkInfo 下载路径中apk的包信息
      * @param context
-     * @return
+     * @return true 表示本地路径中的apk是新版本
      */
-    public static boolean compare(PackageInfo apkInfo, Context context) {
-
+    public static boolean compareVersionCode(PackageInfo apkInfo, Context context) {
         if (null == apkInfo) {
             return false;
         }

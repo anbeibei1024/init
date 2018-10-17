@@ -1,13 +1,10 @@
 package com.dashen.init.common.network.appUpdate;
 
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 
-import com.dashen.utils.LogUtils;
 import com.dashen.utils.ToastUtils;
 
 /**

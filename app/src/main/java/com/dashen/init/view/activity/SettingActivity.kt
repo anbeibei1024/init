@@ -3,12 +3,10 @@ package com.dashen.init.view.activity
 import android.view.View
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
-import com.dashen.init.common.constant.Constant
 import com.dashen.init.common.network.appUpdate.AppDownloadManager
 import com.dashen.init.common.network.appUpdate.HProgressDialogUtils
 import com.dashen.init.common.newNetwork.model.UpdateBean
 import com.dashen.init.common.newNetwork.request.VersionUpdateRequest
-import com.dashen.init.common.utils.SharedPreferencesUtils
 import com.dashen.init.common.utils.SystemUtil
 import com.dashen.init.presenter.SettingHelper
 import com.dashen.init.presenter.viewinter.SettingView
@@ -32,10 +30,13 @@ class SettingActivity : BaseActivity(), SettingView {
 
     override fun initView() {
         initHeadView("设置")
-
         mHelper = SettingHelper(this, this, lifecycle)
-        mDownloadManager = AppDownloadManager(this)
         ll_version.setOnClickListener(this)
+
+        mDownloadManager = AppDownloadManager(this)
+        if (mDownloadManager != null) {
+            mDownloadManager.resume()
+        }
     }
 
     override fun initData() {
@@ -50,28 +51,23 @@ class SettingActivity : BaseActivity(), SettingView {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onDestroy() {
+        super.onDestroy()
         if (mDownloadManager != null) {
-            mDownloadManager.resume()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (mDownloadManager != null) {
-            mDownloadManager.onPause()
+            mDownloadManager.onDestroy()
         }
     }
 
     override fun getUpdateInfoSuccess(it: UpdateBean) {
-        mDownloadManager.downloadApk(it.downloadUrl, getString(R.string.app_name), "")
-        HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
-        mDownloadManager.setUpdateListener { currentByte, totalByte ->
-            HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
-            LogUtils.e("--------------" + Math.round((currentByte.toFloat() / totalByte) * 100))
-            if (currentByte == totalByte) {
-                HProgressDialogUtils.cancel()
+        if (!mDownloadManager.existNewVersionApk()) {
+            mDownloadManager.downloadStart(it.downloadUrl, getString(R.string.app_name), "")
+            HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
+            mDownloadManager.setUpdateListener { currentByte, totalByte ->
+                HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
+                LogUtils.e("--------------" + Math.round((currentByte.toFloat() / totalByte) * 100))
+                if (currentByte == totalByte) {
+                    HProgressDialogUtils.cancel()
+                }
             }
         }
     }
