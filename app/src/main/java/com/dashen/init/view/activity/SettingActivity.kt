@@ -34,9 +34,6 @@ class SettingActivity : BaseActivity(), SettingView {
         ll_version.setOnClickListener(this)
 
         mDownloadManager = AppDownloadManager(this)
-        if (mDownloadManager != null) {
-            mDownloadManager.resume()
-        }
     }
 
     override fun initData() {
@@ -60,7 +57,7 @@ class SettingActivity : BaseActivity(), SettingView {
 
     override fun getUpdateInfoSuccess(it: UpdateBean) {
         if (!mDownloadManager.existNewVersionApk()) {
-            mDownloadManager.downloadStart(it.downloadUrl, getString(R.string.app_name), "")
+            mDownloadManager.downloadStart(it.downloadUrl, getString(R.string.app_name), "下载完成点击安装")
             HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
             mDownloadManager.setUpdateListener { currentByte, totalByte ->
                 HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))

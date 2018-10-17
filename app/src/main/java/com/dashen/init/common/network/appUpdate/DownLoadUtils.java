@@ -1,7 +1,6 @@
 package com.dashen.init.common.network.appUpdate;
 
 import android.app.DownloadManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,13 +9,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
 import com.dashen.utils.LogUtils;
 
 import java.io.File;
+
+import static com.dashen.init.common.network.appUpdate.AppDownloadManager.APP_NAME;
 
 /**
  * 封装 DownLoadManager 下载
@@ -49,36 +49,6 @@ public class DownLoadUtils {
             }
         }
         return instance;
-    }
-
-    /**
-     * 下载
-     *
-     * @param uri
-     * @param title
-     * @param description
-     * @param appName
-     * @return downloadId
-     */
-    public long download(String uri, String title, String description, String appName) {
-
-        //1.构建下载请求
-        DownloadManager.Request downloadRequest = new DownloadManager.Request(Uri.parse(uri));
-        downloadRequest.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        /**设置漫游状态下是否可以下载*/
-        downloadRequest.setAllowedOverRoaming(false);
-        /**如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，
-         我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.*/
-        downloadRequest.setVisibleInDownloadsUi(true);
-        //文件保存位置
-        //file:///storage/emulated/0/Android/data/your-package/files/Download/appName.apk
-        downloadRequest.setDestinationInExternalFilesDir(mContext, Environment.DIRECTORY_DOWNLOADS, appName + ".apk");
-        // 设置一些基本显示信息
-        downloadRequest.setTitle(title);
-        downloadRequest.setDescription(description);
-        //req.setMimeType("application/vnd.android.package-archive");
-        return mDownloadManager.enqueue(downloadRequest);//异步请求
     }
 
     /**
@@ -117,11 +87,11 @@ public class DownLoadUtils {
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) { // 6.0 - 7.0
 //            File apkFile = queryDownloadedApk(mContext, downloadId);
 //            uri = Uri.fromFile(apkFile);
-            uri = Uri.fromFile(new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk"));
+            uri = Uri.fromFile(new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APP_NAME));
         } else { // Android 7.0 以上
             uri = FileProvider.getUriForFile(mContext,
                     "com.dashen.init.fileProvider",
-                    new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk"));
+                    new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APP_NAME));
         }
         return uri;
     }
@@ -218,7 +188,7 @@ public class DownLoadUtils {
      */
     public static PackageInfo getApkInfo(Context context) {
         PackageManager pm = context.getPackageManager();
-        PackageInfo pi = pm.getPackageArchiveInfo(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/app_name.apk", PackageManager.GET_ACTIVITIES);
+        PackageInfo pi = pm.getPackageArchiveInfo(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + APP_NAME, PackageManager.GET_ACTIVITIES);
         if (null != pi) {
             return pi;
         }

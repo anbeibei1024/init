@@ -14,13 +14,13 @@ import android.util.Log;
 
 import com.dashen.init.common.constant.Constant;
 import com.dashen.init.common.utils.SharedPreferencesUtils;
-import com.dashen.utils.LogUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
 public class AppDownloadManager {
     public static final String TAG = "AppDownloadManager";
+    public static final String APP_NAME = "app_name.apk";
     private WeakReference<Activity> weakReference;
     private DownloadManager mDownloadManager;
     private DownloadChangeObserver mDownLoadChangeObserver;
@@ -33,6 +33,7 @@ public class AppDownloadManager {
         mDownloadManager = (DownloadManager) weakReference.get().getSystemService(Context.DOWNLOAD_SERVICE);
         mDownLoadChangeObserver = new DownloadChangeObserver(new Handler());
         mDownloadReceiver = new DownloadReceiver();
+        registerService();
     }
 
     /**
@@ -68,19 +69,19 @@ public class AppDownloadManager {
      */
     public void downloadStart(String apkUrl, String title, String desc) {
         // fix bug : 装不了新版本，在下载之前应该删除已有文件
-        File apkFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk");
+        File apkFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APP_NAME);
         if (apkFile != null && apkFile.exists()) {
             apkFile.delete();
         }
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
-        //设置title
-        request.setTitle(title);
-        // 设置描述
-        request.setDescription(desc);
-        // 完成后显示通知栏
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(weakReference.get(), Environment.DIRECTORY_DOWNLOADS, "app_name.apk");
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+        request.setTitle(title);         //设置title
+        request.setDescription(desc);    // 设置描述
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);  // 完成后显示通知栏
+        // 如果我们希望下载的文件可以被系统的Downloads应用扫描到并管理，我们需要调用Request对象的setVisibleInDownloadsUi方法，传递参数true.
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalFilesDir(weakReference.get(), Environment.DIRECTORY_DOWNLOADS, APP_NAME); //文件保存位置 file:///storage/emulated/0/Android/data/your-package/files/Download/appName.apk
         //在手机SD卡上创建一个download文件夹
         // Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).mkdir() ;
         //指定下载到SD卡的/download/my/目录下
@@ -155,10 +156,7 @@ public class AppDownloadManager {
         this.mUpdateListener = mUpdateListener;
     }
 
-    /**
-     * 对应 {@link Activity }
-     */
-    public void resume() {
+    public void registerService() {
         //设置监听Uri.parse("content://downloads/my_downloads")
         weakReference.get().getContentResolver().registerContentObserver(
                 Uri.parse("content://downloads/my_downloads"), true, mDownLoadChangeObserver);
