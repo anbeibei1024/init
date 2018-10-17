@@ -202,13 +202,13 @@ public class DownLoadUtils {
      * @param context
      * @return true 表示本地路径中的apk是新版本
      */
-    public static boolean compareVersionCode(PackageInfo apkInfo, Context context) {
+    public static boolean compareApkInfo(PackageInfo apkInfo, Context context) {
         if (null == apkInfo) {
             return false;
         }
         String localPackageName = context.getPackageName();
-//        if (localPackageName.equals(apkInfo.packageName)) {
-        if ("com.joyou.smartcity".equals(apkInfo.packageName)) {
+        if (localPackageName.equals(apkInfo.packageName)) {
+//        if ("com.joyou.smartcity".equals(apkInfo.packageName)) {
             try {
                 PackageInfo packageInfo = context.getPackageManager().getPackageInfo(localPackageName, 0);
                 //比较当前APK和下载的APK版本号
@@ -253,4 +253,12 @@ public class DownLoadUtils {
 //        }
     }
 
+
+    public boolean deleteAPk() {
+        File file = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APP_NAME);
+        if (file != null) {
+            return file.delete();
+        }
+        return false;
+    }
 }

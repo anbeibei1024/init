@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.dashen.utils.LogUtils;
 
 /**
- *
+ * 安卓8.0后不能静态注册服务
  */
 
 public class ApkBroadCastReceiver extends BroadcastReceiver {

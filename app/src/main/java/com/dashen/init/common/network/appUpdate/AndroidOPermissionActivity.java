@@ -33,7 +33,6 @@ public class AndroidOPermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // 弹窗
-
         if (Build.VERSION.SDK_INT >= 26) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
         } else {
@@ -67,7 +66,7 @@ public class AndroidOPermissionActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String appName = getString(R.string.app_name);
         builder.setTitle(appName);
-        builder.setMessage("为了正常升级 " + appName + " App，请点击设置按钮，允许安装未知来源应用，本功能只限用于 " + appName + "  App版本升级");
+        builder.setMessage("为了正常升级 " + appName + "App，请点击设置按钮，允许安装未知来源应用，本功能只限用于" + appName + "App版本升级");
         builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override

@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.dashen.init.common.constant.Constant;
 import com.dashen.init.common.utils.SharedPreferencesUtils;
+import com.dashen.utils.LogUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -38,8 +39,10 @@ public class AppDownloadManager {
 
     /**
      * 是否下载过的最新的apk文件
+     * <p>
+     * 会做一些额外的操作 下载过 直接安装
      *
-     * @return true 下载过 直接安装
+     * @return true
      */
     public boolean existNewVersionApk() {
         //如果sp中有记录下载的新版本的apk
@@ -49,14 +52,16 @@ public class AppDownloadManager {
             int status = downLoadUtils.getDownloadStatus(downloadId); //获取当前状态
             if (DownloadManager.STATUS_SUCCESSFUL == status) {   //状态为下载成功
                 //存在下载的APK，如果两个APK相同，启动更新界面。否之则删除，重新下载。
-                if (downLoadUtils.compareVersionCode(downLoadUtils.getApkInfo(weakReference.get()), weakReference.get())) {
+                if (downLoadUtils.compareApkInfo(downLoadUtils.getApkInfo(weakReference.get()), weakReference.get())) {
                     Intent intent = new Intent();
                     intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
                     downLoadUtils.installApk(weakReference.get(), intent);
                     return true;
                 } else {
                     //删除下载任务以及文件
-                    downLoadUtils.getDownloadManager().remove(downloadId);
+//                    downLoadUtils.getDownloadManager().remove(downloadId);
+                    boolean isDelete = downLoadUtils.deleteAPk();
+                    LogUtils.e("---------" + isDelete);
                     SharedPreferencesUtils.INSTANCE.put(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, -1);
                 }
             }
