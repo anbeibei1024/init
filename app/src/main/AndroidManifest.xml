@@ -82,7 +82,8 @@
         <!--版本更新安装包删除广播接受者-->
         <receiver
             android:name=".common.network.appUpdate.ApkBroadCastReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
