@@ -26,7 +26,7 @@ import com.dashen.init.R;
 public class AndroidOPermissionActivity extends AppCompatActivity {
     public static final int INSTALL_PACKAGES_REQUESTCODE = 1;
     private AlertDialog mAlertDialog;
-    public static AppDownloadManager.AndroidOInstallPermissionListener sListener;
+    public static DownloadReceiver.AndroidOInstallPermissionListener sListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

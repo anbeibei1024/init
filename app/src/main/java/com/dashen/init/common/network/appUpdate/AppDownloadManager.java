@@ -42,10 +42,6 @@ public class AppDownloadManager {
         mDownloadReceiver = new DownloadReceiver();
     }
 
-    public void setUpdateListener(OnUpdateListener mUpdateListener) {
-        this.mUpdateListener = mUpdateListener;
-    }
-
     public void downloadApk(String apkUrl, String title, String desc) {
         //如果sp中有记录下载的新版本的apk
         long downloadId = (long) SharedPreferencesUtils.INSTANCE.get(weakReference.get(), Constant.NEW_VERSION_APK_DOWNLOAD_ID, -1L);
@@ -60,16 +56,16 @@ public class AppDownloadManager {
                 Uri downloadUri = downLoadUtils.getDownloadUri(downloadId);
                 if (null != downloadUri) {
                     //存在下载的APK，如果两个APK相同，启动更新界面。否之则删除，重新下载。
-                    if (compare(getApkInfo(weakReference.get(), downloadUri.getPath()), weakReference.get())) {
-
+                    if (downLoadUtils.compare(downLoadUtils.getApkInfo(weakReference.get()), weakReference.get())) {
+//                    if (downLoadUtils.compare(downLoadUtils.getApkInfo(weakReference.get(), downloadUri), weakReference.get())) {
                         Intent intent = new Intent();
                         intent.putExtra(DownloadManager.EXTRA_DOWNLOAD_ID, downloadId);
-                        installApk(weakReference.get(), intent);
+                        downLoadUtils.installApk(weakReference.get(), intent);
 //                        startInstall(weakReference.get(), downloadUri);
                         return;
                     } else {
                         //删除下载任务以及文件
-                        downLoadUtils.getDownloadManager().remove(downloadId);
+//                        downLoadUtils.getDownloadManager().remove(downloadId);
                     }
                 }
                 downloadStart(apkUrl, title, desc);
@@ -85,6 +81,9 @@ public class AppDownloadManager {
         }
     }
 
+    /**
+     * 下载正式开始
+     */
     private void downloadStart(String apkUrl, String title, String desc) {
         // fix bug : 装不了新版本，在下载之前应该删除已有文件
         File apkFile = new File(weakReference.get().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk");
@@ -125,23 +124,25 @@ public class AppDownloadManager {
         mDownloadManager.remove(mReqId);
     }
 
-    /**
-     * 对应 {@link Activity }
-     */
-    public void resume() {
-        //设置监听Uri.parse("content://downloads/my_downloads")
-        weakReference.get().getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true,
-                mDownLoadChangeObserver);
-        // 注册广播，监听APK是否下载完成
-        weakReference.get().registerReceiver(mDownloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-    }
 
     /**
-     * 对应{@link Activity#onPause()} ()}
+     * 下载进度监听
      */
-    public void onPause() {
-        weakReference.get().getContentResolver().unregisterContentObserver(mDownLoadChangeObserver);
-        weakReference.get().unregisterReceiver(mDownloadReceiver);
+    class DownloadChangeObserver extends ContentObserver {
+        /**
+         * Creates a content observer.
+         *
+         * @param handler The handler to run {@link #onChange} on, or null if none.
+         */
+        public DownloadChangeObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            updateView();
+        }
     }
 
     private void updateView() {
@@ -171,176 +172,31 @@ public class AppDownloadManager {
         Log.i(TAG, "下载进度：" + bytesAndStatus[0] + "/" + bytesAndStatus[1] + "");
     }
 
-    class DownloadChangeObserver extends ContentObserver {
-
-        /**
-         * Creates a content observer.
-         *
-         * @param handler The handler to run {@link #onChange} on, or null if none.
-         */
-        public DownloadChangeObserver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            updateView();
-        }
-    }
-
-    class DownloadReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(final Context context, final Intent intent) {
-            boolean haveInstallPermission;
-            // 兼容Android 8.0
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                //先获取是否有安装未知来源应用的权限
-                haveInstallPermission = context.getPackageManager().canRequestPackageInstalls();
-                if (!haveInstallPermission) {//没有权限
-                    // 弹窗，并去设置页面授权
-                    final AndroidOInstallPermissionListener listener = new AndroidOInstallPermissionListener() {
-                        @Override
-                        public void permissionSuccess() {
-                            installApk(context, intent);
-                        }
-
-                        @Override
-                        public void permissionFail() {
-                            ToastUtils.showToast(context, "授权失败，无法安装应用");
-                        }
-                    };
-
-                    AndroidOPermissionActivity.sListener = listener;
-                    Intent intent1 = new Intent(context, AndroidOPermissionActivity.class);
-                    context.startActivity(intent1);
-
-
-                } else {
-                    installApk(context, intent);
-                }
-            } else {
-                installApk(context, intent);
-            }
-
-        }
-    }
-
-
-    /**
-     * @param context
-     * @param intent
-     */
-    private void installApk(Context context, Intent intent) {
-        long completeDownLoadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-
-        LogUtils.e("收到广播");
-        Uri uri;
-        Intent intentInstall = new Intent();
-        intentInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intentInstall.setAction(Intent.ACTION_VIEW);
-
-//        if (completeDownLoadId == mReqId) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { // 6.0以下
-                uri = mDownloadManager.getUriForDownloadedFile(completeDownLoadId);
-            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) { // 6.0 - 7.0
-                File apkFile = queryDownloadedApk(context, completeDownLoadId);
-                uri = Uri.fromFile(apkFile);
-            } else { // Android 7.0 以上
-                uri = FileProvider.getUriForFile(context,
-                        "com.dashen.init.fileProvider",
-                        new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "app_name.apk"));
-                intentInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
-
-            // 安装应用
-            LogUtils.e("下载完成了");
-
-            intentInstall.setDataAndType(uri, "application/vnd.android.package-archive");
-            context.startActivity(intentInstall);
-//        }
-    }
-
-    //通过downLoadId查询下载的apk，解决6.0以后安装的问题
-    public static File queryDownloadedApk(Context context, long downloadId) {
-        File targetApkFile = null;
-        DownloadManager downloader = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-
-        if (downloadId != -1) {
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(downloadId);
-            query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
-            Cursor cur = downloader.query(query);
-            if (cur != null) {
-                if (cur.moveToFirst()) {
-                    String uriString = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                    if (!TextUtils.isEmpty(uriString)) {
-                        targetApkFile = new File(Uri.parse(uriString).getPath());
-                    }
-                }
-                cur.close();
-            }
-        }
-        return targetApkFile;
-    }
-
     public interface OnUpdateListener {
         void update(int currentByte, int totalByte);
     }
 
-    public interface AndroidOInstallPermissionListener {
-        void permissionSuccess();
 
-        void permissionFail();
+    public void setUpdateListener(OnUpdateListener mUpdateListener) {
+        this.mUpdateListener = mUpdateListener;
     }
 
     /**
-     * 比较两个APK的信息
-     *
-     * @param apkInfo
-     * @param context
-     * @return
+     * 对应 {@link Activity }
      */
-    private static boolean compare(PackageInfo apkInfo, Context context) {
-
-        if (null == apkInfo) {
-            return false;
-        }
-        String localPackageName = context.getPackageName();
-//        if (localPackageName.equals(apkInfo.packageName)) {
-        if ("com.joyou.smartcity".equals(apkInfo.packageName)) {
-            try {
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(localPackageName, 0);
-                //比较当前APK和下载的APK版本号
-                if (apkInfo.versionCode > packageInfo.versionCode) {
-                    //如果下载的APK版本号大于当前安装的APK版本号，返回true
-                    return true;
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+    public void resume() {
+        //设置监听Uri.parse("content://downloads/my_downloads")
+        weakReference.get().getContentResolver().registerContentObserver(
+                Uri.parse("content://downloads/my_downloads"), true, mDownLoadChangeObserver);
+        // 注册广播，监听APK是否下载完成
+        weakReference.get().registerReceiver(mDownloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
-
 
     /**
-     * 获取APK程序信息
-     *
-     * @param context
-     * @param path
-     * @return
+     * 对应{@link Activity#onPause()} ()}
      */
-    private static PackageInfo getApkInfo(Context context, String path) {
-
-        PackageManager pm = context.getPackageManager();
-        PackageInfo pi = pm.getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES);
-        if (null != pi) {
-            return pi;
-        }
-        return null;
+    public void onPause() {
+        weakReference.get().getContentResolver().unregisterContentObserver(mDownLoadChangeObserver);
+        weakReference.get().unregisterReceiver(mDownloadReceiver);
     }
-
 }
