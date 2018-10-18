@@ -26,14 +26,13 @@ import com.dashen.init.R;
 public class AndroidOPermissionActivity extends AppCompatActivity {
     public static final int INSTALL_PACKAGES_REQUESTCODE = 1;
     private AlertDialog mAlertDialog;
-    public static AppDownloadManager.AndroidOInstallPermissionListener sListener;
+    public static DownloadReceiver.AndroidOInstallPermissionListener sListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // 弹窗
-
         if (Build.VERSION.SDK_INT >= 26) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, INSTALL_PACKAGES_REQUESTCODE);
         } else {
@@ -65,8 +64,9 @@ public class AndroidOPermissionActivity extends AppCompatActivity {
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("为了正常升级 xxx APP，请点击设置按钮，允许安装未知来源应用，本功能只限用于 xxx APP版本升级");
+        String appName = getString(R.string.app_name);
+        builder.setTitle(appName);
+        builder.setMessage("为了正常升级 " + appName + "App，请点击设置按钮，允许安装未知来源应用，本功能只限用于" + appName + "App版本升级");
         builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override

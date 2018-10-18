@@ -10,9 +10,7 @@ import com.dashen.init.common.newNetwork.request.VersionUpdateRequest
 import com.dashen.init.common.utils.SystemUtil
 import com.dashen.init.presenter.SettingHelper
 import com.dashen.init.presenter.viewinter.SettingView
-import com.dashen.utils.LogUtil
 import com.dashen.utils.LogUtils
-import com.dashen.utils.ToastUtils
 import kotlinx.android.synthetic.main.layout_setting.*
 
 /**
@@ -32,10 +30,10 @@ class SettingActivity : BaseActivity(), SettingView {
 
     override fun initView() {
         initHeadView("设置")
-
         mHelper = SettingHelper(this, this, lifecycle)
-        mDownloadManager = AppDownloadManager(this)
         ll_version.setOnClickListener(this)
+
+        mDownloadManager = AppDownloadManager(this)
     }
 
     override fun initData() {
@@ -50,28 +48,23 @@ class SettingActivity : BaseActivity(), SettingView {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onDestroy() {
+        super.onDestroy()
         if (mDownloadManager != null) {
-            mDownloadManager.resume()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (mDownloadManager != null) {
-            mDownloadManager.onPause()
+            mDownloadManager.onDestroy()
         }
     }
 
     override fun getUpdateInfoSuccess(it: UpdateBean) {
-        mDownloadManager.downloadApk(it.downloadUrl, getString(R.string.app_name), "")
-        HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
-        mDownloadManager.setUpdateListener { currentByte, totalByte ->
-            HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
-            LogUtils.e("--------------"+Math.round((currentByte.toFloat() / totalByte) * 100))
-            if (currentByte == totalByte) {
-                HProgressDialogUtils.cancel()
+        if (!mDownloadManager.existNewVersionApk()) {
+            mDownloadManager.downloadStart(it.downloadUrl, getString(R.string.app_name), "下载完成点击安装")
+            HProgressDialogUtils.showHorizontalProgressDialog(this, "下载进度", false)
+            mDownloadManager.setUpdateListener { currentByte, totalByte ->
+                HProgressDialogUtils.setProgress(Math.round((currentByte.toFloat() / totalByte) * 100))
+                LogUtils.e("--------------" + Math.round((currentByte.toFloat() / totalByte) * 100))
+                if (currentByte == totalByte) {
+                    HProgressDialogUtils.cancel()
+                }
             }
         }
     }

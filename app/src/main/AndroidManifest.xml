@@ -44,11 +44,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--<activity android:name=".view.activity.MainActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
         <activity
             android:name=".view.activity.SplashActivity"
@@ -66,7 +66,7 @@
         <activity android:name=".view.activity.SettingActivity" />
         <activity android:name=".view.activity.PermissionActivity" />
         <activity android:name=".view.activity.PermissionActivity1" />
-        <activity android:name=".common.network.appUpdate.AndroidOPermissionActivity"/>
+        <activity android:name=".common.network.appUpdate.AndroidOPermissionActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -77,6 +77,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>
