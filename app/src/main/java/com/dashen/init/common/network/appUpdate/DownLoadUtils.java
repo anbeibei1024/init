@@ -254,6 +254,12 @@ public class DownLoadUtils {
     }
 
 
+    /**
+     * 在app启动后判断是否需要删除存在的apk文件
+     * 还有清理缓存中
+     *
+     * @return
+     */
     public boolean deleteAPk() {
         File file = new File(mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APP_NAME);
         if (file != null) {
