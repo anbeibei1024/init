@@ -1,10 +1,10 @@
 package com.dashen.init.view.activity
 
 import android.view.View
+import com.beibei.appupdate.AppDownloadManager
+import com.beibei.appupdate.HProgressDialogUtils
 import com.dashen.init.R
 import com.dashen.init.base.BaseActivity
-import com.dashen.init.common.network.appUpdate.AppDownloadManager
-import com.dashen.init.common.network.appUpdate.HProgressDialogUtils
 import com.dashen.init.common.newNetwork.model.UpdateBean
 import com.dashen.init.common.newNetwork.request.VersionUpdateRequest
 import com.dashen.init.common.utils.SystemUtil

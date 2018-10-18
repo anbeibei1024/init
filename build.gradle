@@ -21,10 +21,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'http://maven.jishufang.com/nexus/content/repositories/thirdparty/'
-//这是maven库的url(用大神自己封装的库)
-        }
+        //这是maven库的url(用大神自己封装的库)
+        maven { url 'http://maven.jishufang.com/nexus/content/repositories/thirdparty/' }
+        //这是maven库的url(版本更新用到)
+        maven { url "https://dl.bintray.com/beibei1024/abb/" }
     }
 }
 
