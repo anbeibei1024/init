@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_white"
+              android:orientation="vertical">
+
+   <include layout="@layout/head_view1"/>
+
+    <View style="@style/Horizontal_Line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.beibei.init.view.weight.ProgressWebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            >
+        </com.beibei.init.view.weight.ProgressWebView>
+
+        <!--加载失败或加载出无数据时 的布局-->
+        <!--     <include layout="@layout/no_data_view"/>
+             &lt;!&ndash;加载中的布局&ndash;&gt;
+             <include layout="@layout/loading"/>-->
+    </RelativeLayout>
+</LinearLayout>

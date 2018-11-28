@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_head"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/bg_gradient"
+    >
+
+    <!--返回键-->
+    <ImageView
+        android:id="@+id/iv_head_back"
+        style="@style/selectable_item_background"
+        android:layout_width="@dimen/d50"
+        android:layout_height="@dimen/d50"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/d16"
+        android:src="@mipmap/ic_back" />
+
+    <!--中间标题-->
+    <TextView
+        android:id="@+id/tv_head_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/d50"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/s18"
+        android:textStyle="bold"
+        tools:text="标题" />
+    <!--分享-->
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+        <!--android:id="@+id/sdv_head_right"-->
+        <!--style="@style/selectable_item_background"-->
+        <!--android:layout_width="46dp"-->
+        <!--android:layout_height="46dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:padding="@dimen/d14"-->
+        <!--android:visibility="gone"-->
+        <!--fresco:placeholderImage="@mipmap/ic_launcher"-->
+        <!--fresco:placeholderImageScaleType="centerCrop" />-->
+
+    <!--右边标题-->
+    <TextView
+        android:id="@+id/tv_head_right"
+        style="@style/selectable_item_background"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/d50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:paddingLeft="@dimen/d14"
+        android:paddingRight="@dimen/d14"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/s13"
+        android:visibility="gone"
+        tools:text="标题" />
+
+    <ImageView
+        android:id="@+id/iv_head_right"
+        style="@style/selectable_item_background"
+        android:layout_width="@dimen/d46"
+        android:layout_height="@dimen/d50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/d12"
+        android:paddingRight="@dimen/d12"
+        android:visibility="gone" />
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.dashen.init;
+package com.beibei.init;
 
 import org.junit.Test;
 

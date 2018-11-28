@@ -1,4 +1,4 @@
-package com.dashen.init;
+package com.beibei.init;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.dashen.init", appContext.getPackageName());
+        assertEquals("com.beibei.init", appContext.getPackageName());
     }
 }

@@ -1,5 +1,5 @@
 ext {
-    APPLICATION_ID = "com.dashen.init"
+    APPLICATION_ID = "com.beibei.init"
     COMPILE_SDK_VERSION = 28
     BUILD_TOOLS_VERSION = '28.0.2'
     MIN_SDK_VERSION = 16

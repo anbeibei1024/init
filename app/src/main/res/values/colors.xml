@@ -90,4 +90,7 @@
     <color name="circle_color_light_blue">#FFAABBEA</color>
     <color name="circle_color_blue">@color/base_theme</color>
 
+    <!--登陆-->
+    <color name="color_btn_start">#6c89ff</color>
+    <color name="color_btn_end">#1eb8ee</color>
 </resources>
